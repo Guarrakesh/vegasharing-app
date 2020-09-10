@@ -1,22 +1,45 @@
-import React from 'react';
-import { SafeAreaView, Text, StyleSheet, TouchableOpacity, View, ScrollView } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {SafeAreaView, ScrollView, StyleSheet} from 'react-native';
+import {get} from "../../shared/api/fetch";
+import endpoints from "../../shared/endpoints";
+import RoomCard from "../components/RoomCard";
 
+const USER_ID = "5f5a2b2c89e3b6a308ba73a0";
+
+const rooms = [
+    {
+        name: "Room 1",
+        description: "Description 1"
+    },
+    {
+        name: "Room 2",
+        description: "Description 2"
+    }
+]
 const RoomsScreen = () => {
 
+    const [rooms, setRooms] = useState([]);
+
+    let getRoomsUrl = endpoints.ROOMS.GETBYUSERID;
+    getRoomsUrl = getRoomsUrl.replace(":userId", USER_ID);
+
+    const fetchRooms = async () => {
+        try {
+            const rooms = await get(getRoomsUrl, {});
+            setRooms(rooms);
+        } catch (exception) {
+            console.log("Impossibile leggere le stanze: " + exception.message);
+        }
+    }
+
+
+    useEffect(() => {
+        fetchRooms();
+    }, []);
     return (
-        <SafeAreaView containerStyle={styles.container}>
+        <SafeAreaView style={styles.container} >
             <ScrollView contentContainerStyle={{justifyContent: 'center', alignItems: 'center'}}>
-                <TouchableOpacity title=""
-                                  onPress={()=>{}}
-                                  style={styles.touchable}>
-                    <View style={{flex: 1}}>
-                        <Text style={styles.touhableTitle}>Stanza1</Text>
-                        <Text style={{paddingVertical: 10}}>Testo1</Text>
-                        <Text style={{paddingVertical: 10}}>Testo1</Text>
-                        <Text style={{paddingVertical: 10}}>Testo1</Text>
-                        <Text style={{paddingVertical: 10}}>Testo1</Text>
-                    </View>
-                </TouchableOpacity>
+                { rooms.map(room => (<RoomCard room={room}/>)) }
             </ScrollView>
         </SafeAreaView>
     )
@@ -26,26 +49,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "rgba(255,255,255, 0.4)",
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
 
-    touchable:{
-        flex: 1,
-        backgroundColor: '#FC4710',
-        marginTop: 25,
-        borderRadius: 25,
-        justifyContent: 'center',
-        paddingHorizontal: 16,
-        paddingVertical: 8,
-        width: "85%",
-        height: "100%",
-    },
-
-    touhableTitle:{
-        color: '#fff',
-        fontSize: 40,
-        textAlign: 'left',
     },
 })
 

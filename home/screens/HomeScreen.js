@@ -2,13 +2,13 @@ import AsyncStorage from "@react-native-community/async-storage";
 import {StatusBar} from "expo-status-bar";
 import React, { useState, useEffect } from 'react';
 import {Button, StyleSheet, Text, View, TextInput} from "react-native";
-import {request} from "../../shared/api/request";
+import {fetch} from "../../shared/api/fetch";
 
 const HomeScreen = ({ navigation }) => {
 
   const onPress = async () => {
     try {
-      const response = await request('/authentication/login', 'POST', {
+      const response = await fetch('/authentication/login', 'POST', {
         data: {
           email: "dario.guarracino2@gmail.com",
           password: "sabcde123"

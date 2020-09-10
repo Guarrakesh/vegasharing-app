@@ -1,4 +1,4 @@
-import {request} from "../../shared/api/request";
+import {fetch} from "../../shared/api/fetch";
 
 export function login(email, password) {
 

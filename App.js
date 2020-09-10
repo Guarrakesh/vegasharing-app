@@ -8,7 +8,8 @@ import HandsStack from "./hands/screens/HandsStack";
 import RoomsStack from "./rooms/screens/RoomsStack";
 import SettingsScreen from "./settings/screens/SettingsScreen";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-
+import mainTheme from "./shared/theme/mainTheme";
+import ThemeContext from './shared/theme/ThemeContext';
 
 const Tab = createBottomTabNavigator();
 const RootStack = createStackNavigator();
@@ -27,14 +28,16 @@ const MainNavigator = () => {
 export default function App() {
 
   return (
-      <NavigationContainer>
-        <RootStack.Navigator>
-          <RootStack.Screen name="MainNavigation" component={MainNavigator} options={{ headerShown: false}}/>
-          <RootStack.Screen name="AuthStack" component={AuthStack} options={{ headerShown: false}} />
+      <ThemeContext.Provider value={mainTheme}>
+        <NavigationContainer>
+          <RootStack.Navigator>
+            <RootStack.Screen name="MainNavigation" component={MainNavigator} options={{ headerShown: false}}/>
+            <RootStack.Screen name="AuthStack" component={AuthStack} options={{ headerShown: false}} />
 
-        </RootStack.Navigator>
+          </RootStack.Navigator>
 
 
-      </NavigationContainer>
+        </NavigationContainer>
+      </ThemeContext.Provider>
   );
 }
