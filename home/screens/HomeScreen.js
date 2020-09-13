@@ -2,33 +2,16 @@ import AsyncStorage from "@react-native-community/async-storage";
 import {StatusBar} from "expo-status-bar";
 import React, { useState, useEffect } from 'react';
 import {Button, StyleSheet, Text, View, TextInput} from "react-native";
+import {useAuth} from "../../auth/AuthenticationContext";
 import {fetch} from "../../shared/api/fetch";
 
 const HomeScreen = ({ navigation }) => {
 
-  const onPress = async () => {
-    try {
-      const response = await fetch('/authentication/login', 'POST', {
-        data: {
-          email: "dario.guarracino2@gmail.com",
-          password: "sabcde123"
-        }
-      });
-      const token = response.data.token;
-      const user = response.data.user;
-      AsyncStorage.setItem('USER_TOKEN', JSON.stringify(token)); // serializzo la token e la salvo nello storage
-      AsyncStorage.setItem('USER', JSON.stringify(user));
-
-
-    } catch (ex) {
-      console.log(ex.message);
-    }
-  };
+  const { user, token } = useAuth();
 
   const onTokenPress = async () => {
-    let token = await AsyncStorage.getItem('USER_TOKEN');
+
     if (token) {
-      token = JSON.parse(token);
       alert(token.accessToken);
     } else {
       alert("La token non esiste, prova a loggarti prima");
@@ -50,8 +33,7 @@ const HomeScreen = ({ navigation }) => {
       <View style={styles.container}>
         <View style={{ backgroundColor: '#fefdaa', width: 300, height: 140, borderRadius: 12, padding: 12}}>
           <View style={{ height: 10, width: '100%', backgroundColor: backgroundColor }}></View>
-          <Text>Welcome to VEGA-sharing</Text>
-          <Button onPress={onPress} title={"Premi per autenticarti"} />
+          <Text>Welcome to VEGA-sharing, { user ? user.name : ""}</Text>
           <Button onPress={onTokenPress} title={"Premi per visualizzare la token"}/>
 
           <TextInput style={{ backgroundColor: '#fff', padding: 12 }} onChangeText={setText} value={text}/>

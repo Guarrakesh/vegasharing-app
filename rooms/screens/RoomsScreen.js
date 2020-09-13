@@ -20,12 +20,11 @@ const RoomsScreen = () => {
 
     const [rooms, setRooms] = useState([]);
 
-    let getRoomsUrl = endpoints.ROOMS.GETBYUSERID;
-    getRoomsUrl = getRoomsUrl.replace(":userId", USER_ID);
+    let getRoomsUrl = endpoints.ROOMS.GET_MANY;
 
     const fetchRooms = async () => {
         try {
-            const rooms = await get(getRoomsUrl, {});
+            const rooms = await get(getRoomsUrl, { userId: USER_ID });
             setRooms(rooms);
         } catch (exception) {
             console.log("Impossibile leggere le stanze: " + exception.message);
