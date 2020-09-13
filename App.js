@@ -9,6 +9,7 @@ import HandsStack from "./hands/screens/HandsStack";
 import RoomsStack from "./rooms/screens/RoomsStack";
 import SettingsScreen from "./settings/screens/SettingsScreen";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import APIContextProvider from "./shared/api/APIContext";
 import ErrorContextProvider from "./shared/notification/ErrorContext";
 import {ErrorNotification} from "./shared/notification/ErrorNotification";
 import mainTheme from "./shared/theme/mainTheme";
@@ -27,11 +28,13 @@ const MainNavigator = () => {
         <Tab.Screen name="Auth" component={AuthStack}/>
       </Tab.Navigator>
   )
-}
+};
+
 export default function App() {
 
   return (
       <ThemeContext.Provider value={mainTheme}>
+      <APIContextProvider>
         <AuthContextProvider>
           <ErrorContextProvider>
             <NavigationContainer>
@@ -44,6 +47,7 @@ export default function App() {
             <ErrorNotification/>
           </ErrorContextProvider>
         </AuthContextProvider>
+      </APIContextProvider>
       </ThemeContext.Provider>
   );
 }

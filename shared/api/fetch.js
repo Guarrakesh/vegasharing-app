@@ -6,22 +6,12 @@ import {APIError} from "./APIError";
 
 const serverHost = 'http://localhost:3000';
 
-axios.interceptors.request.use(async function(request) {
-  // se esiste, la aggiungo agli header di richiesta per l'autenticazione
+export const addRequestInterceptor = (callback => axios.interceptors.request.use(callback) );
+export const removeRequestInterceptor = (interceptor) => axios.interceptors.request.eject(interceptor);
+export const addResponseInterceptor = (callback) => axios.interceptors.response.use(callback);
+export const removeResponseInterceptor = (interceptor) => axios.interceptors.response.eject(interceptor);
 
-  if (request.headers && request.headers.Authentication) {
-    return request;
-  } else {
-    const userToken = await AsyncStorage.getItem(KEY_USER_TOKEN);
-    if (userToken) {
-      request.headers = {
-        ...request.headers ?? {},
-        Authentication: 'Bearer ' + JSON.parse(userToken).accessToken
-      };
-    }
-    return request;
-  }
-});
+
 
 /**
  * Generic fetch request
@@ -44,7 +34,10 @@ export async function fetchAPI(endpoint, method, options)
         throw new Error("Metodo non supportato.");
     }
   } catch (error) {
-    throw new APIError(error.message, error.response.request, error.response);
+    if (error.request) {
+      throw new APIError(error.message, error.response.request, error.response);
+    }
+    throw (error);
   }
 }
 

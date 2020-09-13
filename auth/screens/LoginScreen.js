@@ -1,5 +1,6 @@
 import React, { useState} from 'react';
 import { SafeAreaView, Text, StyleSheet, TextInput, TouchableOpacity, View, Image } from 'react-native';
+import {useAPI} from "../../shared/api/APIContext";
 import {useErrorContext} from "../../shared/notification/ErrorContext";
 import {login} from "../api/login";
 import {useAuth} from "../AuthenticationContext";
@@ -11,14 +12,16 @@ const LoginScreen = ({ navigation }) => {
   const [username, setUsername] = useState(null);
   const [password, setPassword] = useState(null);
   const { onLoginSuccess } = useAuth();
+  const { post } = useAPI();
   const { addError, error } = useErrorContext();
   const submit = async () => { 
     // fai le tue cose di login
     try {
-      const response = await login(username, password);
+      const response = await post(username, password);
       onLoginSuccess(response.user, response.token);
       navigation.navigate(routes.HOME_SCREEN);
     } catch (ex) {
+     throw(ex);
       if (ex.status >= 400 && ex.status <= 499) {
         addError(`Login non riuscito, credenziali errate`);
       } else {
