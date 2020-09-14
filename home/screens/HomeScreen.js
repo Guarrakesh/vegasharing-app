@@ -33,7 +33,8 @@ const HomeScreen = ({ navigation }) => {
       <View style={styles.container}>
         <View style={{ backgroundColor: '#fefdaa', width: 300, height: 140, borderRadius: 12, padding: 12}}>
           <View style={{ height: 10, width: '100%', backgroundColor: backgroundColor }}></View>
-          <Text>Welcome to VEGA-sharing, { user ? user.name : ""}</Text>
+          <Text>Welcome to VEGA-sharing, { user ? user.name : ""} { user ? user.lastname : ""}</Text>
+          <Text>{user && user.email}</Text>
           {authenticated ? <Button onPress={onTokenPress} title={"Premi per visualizzare la token"}/>
               : <Text>Non sei autenticato</Text>
           }

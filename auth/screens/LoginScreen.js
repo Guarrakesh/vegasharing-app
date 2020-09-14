@@ -50,6 +50,14 @@ const LoginScreen = ({ navigation }) => {
                             style={styles.buttonStyle(!username || !password)}>
             <Text style={{color: '#FC4710', fontSize: 16, fontWeight: '600'}}>Accedi</Text>
           </TouchableOpacity>
+
+          <TouchableOpacity
+              title={"Sign up"}
+              onPress={() => navigation.navigate(routes.SIGNUP_SCREEN)}
+              style={{ marginTop: 32, flex: 1, alignSelf: 'center', width: '100%', textAlign: 'center'}}
+              >
+          <Text style={styles.signup} textDecorationLine="underline">Sign up</Text>
+          </TouchableOpacity>
         </View>
       </SafeAreaView>
   )
@@ -73,6 +81,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 16
-  })
+  }),
+  signup: {
+    textAlign: 'center',
+    textDecorationLine: "underline"
+  }
 })
 export default LoginScreen;
