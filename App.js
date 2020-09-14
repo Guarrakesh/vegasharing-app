@@ -26,7 +26,7 @@ const MainNavigator = () => {
         <Tab.Screen name="MyHands" component={HandsStack}/>
         <Tab.Screen name="Rooms" component={RoomsStack}/>
         <Tab.Screen name="Settings" component={SettingsScreen}/>
-        <Tab.Screen name="Auth" component={AuthStack}/>
+
       </Tab.Navigator>
   )
 };

@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {SafeAreaView, ScrollView, StyleSheet} from 'react-native';
-import {get} from "../../shared/api/fetch";
+import {useAuth} from "../../auth/AuthenticationContext";
+import {useAPI} from "../../shared/api/APIContext";
 import endpoints from "../../shared/endpoints";
 import RoomCard from "../components/RoomCard";
 
-const USER_ID = "5f5bdf4068deb50097958aac";
 //
 // const rooms = [
 //     {
@@ -19,18 +19,17 @@ const USER_ID = "5f5bdf4068deb50097958aac";
 const RoomsScreen = ({navigation}) => {
 
     const [rooms, setRooms] = useState([]);
-
+    const { user } = useAuth();
+    const { get } = useAPI();
+    console.log(user);
     let getRoomsUrl = endpoints.ROOMS.GET_MANY;
-
-    let getRoomsUrl = endpoints.ROOMS.GETBYUSERID;
-    getRoomsUrl = getRoomsUrl.replace(":userId", USER_ID);
     const fetchRooms = async () => {
 
         try {
-            const rooms = await get(getRoomsUrl, { userId: USER_ID });
-            setRooms(rooms);
+            const rooms = await get(getRoomsUrl, { userId: user.id });
+            setRooms(rooms.data);
         } catch (exception) {
-            console.log("Impossibile leggere le stanze: " + exception.message);
+            console.log("Impossibile leggere le stanze: " + exception.response.data.message);
         }
     }
 

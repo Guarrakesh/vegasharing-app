@@ -17,7 +17,6 @@ export default function AuthContextProvider({ children }) {
     authenticated: false,
     user: {},
     token: {},
-    onLoginSuccess: () => {}
   });
 
   const { addRequestInterceptor, removeRequestInterceptor } = useAPI();
@@ -27,21 +26,24 @@ export default function AuthContextProvider({ children }) {
    * @param request
    * @return {Promise<void>}
    */
-  const addTokenInterceptor = useCallback(async (request) => {
+  const addTokenInterceptor = async (request) => {
 
-    if (request.headers && request.headers.Authentication) {
+
+    if (request.headers && request.headers.Authorization) {
       return request;
     } else {
       const userToken = state.token;
+
       if (userToken) {
         request.headers = {
           ...(request.headers ?? {}),
-          Authentication: 'Bearer ' + userToken
+    //      Authorization: 'Bearer ' + userToken.accessToken
+          Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmNWY2ZmUyMTdlY2ViYjg0NWE4NDgzYiIsImlhdCI6MTYwMDA5NTE1NiwiZXhwIjoxNjAwMDk4NzU2fQ.drq4RjwYVWkwjfB1-pQvwI0ugFnMgpOZ5sGA0CtsjQY",
         };
       }
       return request;
     }
-  }, [state.token]);
+  };
 
 
   useEffect(() => {
@@ -59,10 +61,12 @@ export default function AuthContextProvider({ children }) {
   const preloadValues = async () => {
     const token = await AsyncStorage.getItem(KEY_USER_TOKEN);
     const user = await AsyncStorage.getItem(KEY_USER);
+
     const newState = {};
     if (token) {
       newState.token = JSON.parse(token);
       newState.authenticated = true;
+
     };
     if (user) { newState.user = JSON.parse(user)};
     setState({ ...state, ...newState })

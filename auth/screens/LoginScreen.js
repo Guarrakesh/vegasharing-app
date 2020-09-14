@@ -17,12 +17,11 @@ const LoginScreen = ({ navigation }) => {
   const submit = async () => { 
     // fai le tue cose di login
     try {
-      const response = await post(username, password);
-      onLoginSuccess(response.user, response.token);
+      const response = await login(username, password);
+      onLoginSuccess(response.data.user, response.data.token);
       navigation.navigate(routes.HOME_SCREEN);
     } catch (ex) {
-     throw(ex);
-      if (ex.status >= 400 && ex.status <= 499) {
+      if (ex.response.status >= 400 && ex.response.status <= 499) {
         addError(`Login non riuscito, credenziali errate`);
       } else {
         addError(`Non è stato possibile autenticarti: ${ex.message} (${ex.status})`, ex.status)

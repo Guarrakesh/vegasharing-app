@@ -22,10 +22,12 @@ export const removeResponseInterceptor = (interceptor) => axios.interceptors.res
  */
 export async function fetchAPI(endpoint, method, options)
 {
+
   try {
     switch (method.toLowerCase()) {
       case 'get': {
-        return await axios.get(serverHost + endpoint)
+        const resp =  await axios.get(serverHost + endpoint);
+      return resp;
       }
       case 'post': {
         return await axios.post(serverHost + endpoint, options.data)
@@ -50,9 +52,15 @@ export async function fetchAPI(endpoint, method, options)
  */
 export async function get(endpoint, params = {}, options)
 {
-  const response = await fetchAPI(buildEndpoint(endpoint, params), 'GET', options);
-    return response.data;
+  try {
 
+    return await fetchAPI(buildEndpoint(endpoint, params), 'GET', options);
+
+  } catch (error) {
+    if (error.request) {
+      throw new APIError(error.message, error.response.request, error.response);
+    }
+  }
 }
 
 /**
@@ -64,12 +72,10 @@ export async function get(endpoint, params = {}, options)
  */
 export async function post(endpoint, body, options)
 {
-
-    const response = await fetchAPI(endpoint, 'POST', {
+  return await fetchAPI(endpoint, 'POST', {
       data: body,
       ...options
     });
-    return response.data;
 
 }
 /**
@@ -89,6 +95,6 @@ function buildEndpoint(endpoint, params) {
         url += "&";
       }
     });
-  }
+}
   return url;
 }

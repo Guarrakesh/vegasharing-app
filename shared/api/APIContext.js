@@ -4,7 +4,6 @@ import axios from 'axios';
 
 const initialValue = {
   data: {},
-  axios: null,
   fetch: () => {},
   post: () => {},
   put: () => {},
@@ -19,9 +18,9 @@ export const APIContext = React.createContext(initialValue);
 
 export default function APIContextProvider({ children }) {
 
-  const fetch = (...args) => fetchAPI(...args);
-  const post = (...args) => postAPI(...args);
-  const get = (...args) => getAPI(...args);
+  const fetch = async (...args) => fetchAPI(...args);
+  const post = async (...args) => postAPI(...args);
+  const get = async (...args) => getAPI(...args);
 
   const contextValue = {
     ...initialValue,
