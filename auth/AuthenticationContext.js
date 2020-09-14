@@ -64,9 +64,12 @@ export default function AuthContextProvider({ children }) {
 
     const newState = {};
     if (token) {
-      newState.token = JSON.parse(token);
-      newState.authenticated = true;
-
+      const expires = new Date(token.expiresIn);
+      if (new Date() > expires) {
+        newState.authenticated = false;
+        newState.token = null;
+        await AsyncStorage.remove(KEY_USER_TOKEN);
+      }
     };
     if (user) { newState.user = JSON.parse(user)};
     setState({ ...state, ...newState })
