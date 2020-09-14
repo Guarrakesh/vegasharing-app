@@ -8,6 +8,11 @@ export default {
 
   AUTH: {
     LOGIN: "/authentication/login",
-    REGISTER: "/authentication/register"
+    REGISTER: "/authentication/register",
+    REFRESH_TOKEN: "/authentication/refresh-token"
+  },
+
+  USERS: {
+    GET_MANY: '/users'
   }
 }
