@@ -2,7 +2,8 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
 
 
-const serverHost = 'http://localhost:3000';
+//const serverHost = 'http://localhost:3000';
+const serverHost = 'http://10.0.2.2:3000';
 
 export async function fetchAPI(endpoint, method, options)
 {
@@ -39,7 +40,6 @@ export async function fetchAPI(endpoint, method, options)
 export async function get(endpoint, params = {}, options)
 {
   try {
-
     const response = await fetchAPI(buildEndpoint(endpoint, params), 'GET', options);
     return response.data;
   } catch (exception) {

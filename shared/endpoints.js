@@ -1,7 +1,7 @@
 export default {
   ROOMS: {
     GET_MANY: "/rooms",
-    GETBYUSERID: "/room/:userId", // questa andrà eliminata una volta che /rooms/:userId diventerà /rooms?userId=:userId
+    GETBYUSERID: "/rooms?userId=:userId", // questa andrà eliminata una volta che /rooms/:userId diventerà /rooms?userId=:userId
     GET_ONE: "/rooms/:id",
     POST: "/rooms",
     DELETE: "/rooms",

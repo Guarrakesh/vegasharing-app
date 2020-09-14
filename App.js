@@ -10,6 +10,7 @@ import SettingsScreen from "./settings/screens/SettingsScreen";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import mainTheme from "./shared/theme/mainTheme";
 import ThemeContext from './shared/theme/ThemeContext';
+import {Button} from "react-native";
 
 const Tab = createBottomTabNavigator();
 const RootStack = createStackNavigator();
