@@ -14,6 +14,7 @@ import ErrorContextProvider from "./shared/notification/ErrorContext";
 import {ErrorNotification} from "./shared/notification/ErrorNotification";
 import mainTheme from "./shared/theme/mainTheme";
 import ThemeContext from './shared/theme/ThemeContext';
+import {Button} from "react-native";
 
 const Tab = createBottomTabNavigator();
 const RootStack = createStackNavigator();

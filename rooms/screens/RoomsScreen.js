@@ -4,25 +4,28 @@ import {get} from "../../shared/api/fetch";
 import endpoints from "../../shared/endpoints";
 import RoomCard from "../components/RoomCard";
 
-const USER_ID = "5f5a2b2c89e3b6a308ba73a0";
-
-const rooms = [
-    {
-        name: "Room 1",
-        description: "Description 1"
-    },
-    {
-        name: "Room 2",
-        description: "Description 2"
-    }
-]
-const RoomsScreen = () => {
+const USER_ID = "5f5bdf4068deb50097958aac";
+//
+// const rooms = [
+//     {
+//         name: "Room 1",
+//         description: "Description 1"
+//     },
+//     {
+//         name: "Room 2",
+//         description: "Description 2"
+//     }
+// ]
+const RoomsScreen = ({navigation}) => {
 
     const [rooms, setRooms] = useState([]);
 
     let getRoomsUrl = endpoints.ROOMS.GET_MANY;
 
+    let getRoomsUrl = endpoints.ROOMS.GETBYUSERID;
+    getRoomsUrl = getRoomsUrl.replace(":userId", USER_ID);
     const fetchRooms = async () => {
+
         try {
             const rooms = await get(getRoomsUrl, { userId: USER_ID });
             setRooms(rooms);
@@ -35,10 +38,13 @@ const RoomsScreen = () => {
     useEffect(() => {
         fetchRooms();
     }, []);
+
+    const onCardPress=(room)=>{navigation.navigate('Details Room', {id:room._id, room})};
+
     return (
         <SafeAreaView style={styles.container} >
             <ScrollView contentContainerStyle={{justifyContent: 'center', alignItems: 'center'}}>
-                { rooms.map(room => (<RoomCard room={room}/>)) }
+                { rooms.map(room => (<RoomCard key={room._id} room={room} onPress={()=> onCardPress(room)}/>))}
             </ScrollView>
         </SafeAreaView>
     )
