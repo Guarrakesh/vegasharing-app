@@ -2,6 +2,7 @@ import React, { useState} from 'react';
 import { SafeAreaView, Text, StyleSheet, TextInput, TouchableOpacity, View, Image } from 'react-native';
 import {useAPI} from "../../shared/api/APIContext";
 import {useErrorContext} from "../../shared/notification/ErrorContext";
+import {useTheme} from "../../shared/theme/ThemeContext";
 import {login} from "../api/login";
 import {useAuth} from "../AuthenticationContext";
 import routes from "../../shared/routes";
@@ -14,7 +15,9 @@ const LoginScreen = ({ navigation }) => {
   const { onLoginSuccess } = useAuth();
   const { post } = useAPI();
   const { addError, error } = useErrorContext();
-  const submit = async () => { 
+  const theme = useTheme();
+  const styles = makeStyles(theme);
+  const submit = async () => {
     // fai le tue cose di login
     try {
       const response = await login(username, password);
@@ -30,43 +33,50 @@ const LoginScreen = ({ navigation }) => {
   }
 
   return (
-      <SafeAreaView style={{backgroundColor: '#FC4710', flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <View style={{backgroundColor: theme.backgroundColor, flex: 1,  alignItems: 'center'}}>
 
-        <View style={{height: "50%", width: '80%', alignItems: 'flex-start' }}>
+        <SafeAreaView style={{backgroundColor: theme.palette.primary.main, width: '100%', flexBasis: '30%', justifyContent: 'center', borderBottomLeftRadius: 40, borderBottomRightRadius: 40}}>
           <Image style={{ width: 80, height: 80, alignSelf: 'center', marginBottom: 12}} source={{ uri: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1280px-React-icon.svg.png"}}/>
-          <Text style={{ color: '#fff'}}>Username</Text>
-          <TextInput
-              autoCapitalize="none"
-              keyboardType="email-address"
-              textContentType="username"
-              style={styles.textInputStyle} onChangeText={setUsername}/>
-          <Text style={{color: '#fff', marginTop: 16}}>Password</Text>
-          <TextInput secureTextEntry={true} style={styles.textInputStyle} onChangeText={setPassword}/>
 
-          <TouchableOpacity title="Login"
-                            onPress={submit}
-                            disabled={!username || !password}
+        </SafeAreaView>
+        <View style={{paddingTop: 42, backgroundColor: theme.backgroundColor, flex: 3, flexBasis: "70%", width: '100%', alignItems: 'center' }}>
 
-                            style={styles.buttonStyle(!username || !password)}>
-            <Text style={{color: '#FC4710', fontSize: 16, fontWeight: '600'}}>Accedi</Text>
-          </TouchableOpacity>
+          <View style={{ width: '80%', flex: 1, justifyContent: 'center'}}>
+            <Text style={{ color: theme.palette.text}}>Username</Text>
+            <TextInput
+                placeholder="Username"
+                autoCapitalize="none"
+                keyboardType="email-address"
+                textContentType="username"
+                style={styles.textInputStyle} onChangeText={setUsername}/>
+            <Text style={{color:  theme.palette.text, marginTop: 16}}>Password</Text>
+            <TextInput placeholder="Password" secureTextEntry={true} style={styles.textInputStyle} onChangeText={setPassword}/>
 
-          <TouchableOpacity
-              title={"Sign up"}
-              onPress={() => navigation.navigate(routes.SIGNUP_SCREEN)}
-              style={{ marginTop: 32, flex: 1, alignSelf: 'center', width: '100%', textAlign: 'center'}}
-              >
-          <Text style={styles.signup} textDecorationLine="underline">Sign up</Text>
-          </TouchableOpacity>
+            <TouchableOpacity title="Login"
+                              onPress={submit}
+                              disabled={!username || !password}
+
+                              style={styles.buttonStyle(!username || !password)}>
+              <Text style={{color: theme.palette.white, fontSize: 16, fontWeight: '600'}}>Accedi</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+                title={"Sign up"}
+                onPress={() => navigation.navigate(routes.SIGNUP_SCREEN)}
+                style={{ marginTop: 32, flex: 1, alignSelf: 'center', width: '100%', textAlign: 'center'}}
+            >
+              <Text style={styles.signup} textDecorationLine="underline">Sign up</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </SafeAreaView>
+      </View>
   )
 }
 
-const styles = StyleSheet.create({
+const makeStyles = theme => StyleSheet.create({
   textInputStyle: {
     marginTop: 8,
-    backgroundColor: "rgba(255,255,255, 0.4)",
+    backgroundColor: theme.textInput.backgroundColor,
     paddingVertical: 12,
     paddingHorizontal: 16,
     width: '100%',
@@ -74,17 +84,19 @@ const styles = StyleSheet.create({
   },
   buttonStyle: (disabled) => ({
     marginTop: 24,
-    backgroundColor: disabled ? "rgba(210,210,210,0.36)":  "#EAFF00",
+    backgroundColor: disabled ? "rgba(210,210,210,0.36)":  theme.palette.primary.main,
     paddingVertical: 12,
     borderRadius: 4,
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
+    color: theme.palette.white,
     paddingHorizontal: 16
   }),
   signup: {
     textAlign: 'center',
-    textDecorationLine: "underline"
+    textDecorationLine: "underline",
+
   }
 })
 export default LoginScreen;

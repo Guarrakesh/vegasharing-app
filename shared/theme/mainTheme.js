@@ -26,6 +26,9 @@ export default {
   },
 
   backgroundColor: '#fff',
+  textInput: {
+    backgroundColor: '#f7f7f7',
+  },
   card: {
     borderRadius: 25
   },
