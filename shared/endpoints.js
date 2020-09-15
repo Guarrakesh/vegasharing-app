@@ -1,7 +1,6 @@
 export default {
   ROOMS: {
     GET_MANY: "/rooms",
-    GETBYUSERID: "/room/:userId", // questa andrà eliminata una volta che /rooms/:userId diventerà /rooms?userId=:userId
     GET_ONE: "/rooms/:id",
     POST: "/rooms",
     DELETE: "/rooms",
@@ -9,6 +8,11 @@ export default {
 
   AUTH: {
     LOGIN: "/authentication/login",
-    REGISTER: "/authentication/register"
+    REGISTER: "/authentication/register",
+    REFRESH_TOKEN: "/authentication/refresh-token"
+  },
+
+  USERS: {
+    GET_MANY: '/users'
   }
 }

@@ -1,3 +1,5 @@
+import shadows from "./shadows";
+
 export default {
 
   palette: {
@@ -9,38 +11,26 @@ export default {
     accent: {
       main: "#6E71E6",
       dark: "#474ABA",
-      light: "#b7a7f0"
+      light: "#A7A9FF"
+    },
+    error: {
+      main: "#EA2027",
+      dark: "#C01218",
+      light: "#EB4046"
     },
     white: "#fff",
     text: "#444",
   },
   elevation: {
-    1: {
-      shadowColor: "#000",
-      shadowOffset: {
-        width: 0,
-        height: 1,
-      },
-      shadowOpacity: 0.18,
-      shadowRadius: 1.00,
-      elevation: 1,
-    },
-    8: {
-      shadowColor: "#000",
-      shadowOffset: {
-        width: 0,
-        height: 4,
-      },
-      shadowOpacity: 0.30,
-      shadowRadius: 4.65,
-
-      elevation: 8,
-    }
+    ...shadows
   },
+
+  backgroundColor: '#fff',
   card: {
     borderRadius: 25
   },
   borders: {
+    color: '#dfdfdf',
     borderRadius1: 4,
     borderRadius2: 8,
     borderRadius3: 12
