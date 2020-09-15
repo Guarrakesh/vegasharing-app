@@ -14,12 +14,19 @@ import ErrorContextProvider from "./shared/notification/ErrorContext";
 import {ErrorNotification} from "./shared/notification/ErrorNotification";
 import mainTheme from "./shared/theme/mainTheme";
 import ThemeContext from './shared/theme/ThemeContext';
-import {Button} from "react-native";
+import routes from './shared/routes';
 
 const Tab = createBottomTabNavigator();
 const RootStack = createStackNavigator();
 
-const MainNavigator = () => {
+const MainNavigator = ({ navigation }) => {
+
+  const { authenticated} = useAuth();
+  useEffect(() => {
+    if (!authenticated) {
+      navigation.navigate(routes.AUTH)
+    }
+  }, [authenticated]);
   return (
       <Tab.Navigator>
         <Tab.Screen name="Home" component={HomeStack}/>
@@ -41,7 +48,7 @@ export default function App() {
             <NavigationContainer>
               <RootStack.Navigator>
                 <RootStack.Screen name="MainNavigation" component={MainNavigator} options={{ headerShown: false}}/>
-                <RootStack.Screen name="AuthStack" component={AuthStack} options={{ headerShown: false}} />
+                <RootStack.Screen name={routes.AUTH} component={AuthStack} options={{ headerShown: false}} />
 
               </RootStack.Navigator>
             </NavigationContainer>

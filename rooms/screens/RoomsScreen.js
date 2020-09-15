@@ -21,10 +21,8 @@ const RoomsScreen = ({navigation}) => {
     const [rooms, setRooms] = useState([]);
     const { user } = useAuth();
     const { get } = useAPI();
-    console.log(user);
     let getRoomsUrl = endpoints.ROOMS.GET_MANY;
     const fetchRooms = async () => {
-
         try {
             const rooms = await get(getRoomsUrl, { userId: user.id });
             setRooms(rooms.data);

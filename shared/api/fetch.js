@@ -1,6 +1,5 @@
 import axios from 'axios';
-import AsyncStorage from '@react-native-community/async-storage';
-import {KEY_USER_TOKEN} from "../../auth/api/login";
+
 import {APIError} from "./APIError";
 
 
