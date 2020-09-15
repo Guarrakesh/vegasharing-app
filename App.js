@@ -1,8 +1,8 @@
 import 'react-native-gesture-handler';
 import {NavigationContainer} from "@react-navigation/native";
 import {createStackNavigator} from "@react-navigation/stack";
-import React from 'react';
-import AuthContextProvider from "./auth/AuthenticationContext";
+import React, { useEffect } from 'react';
+import AuthContextProvider, {useAuth} from "./auth/AuthenticationContext";
 import AuthStack from "./auth/screens/AuthStack";
 import HomeStack from "./home/screens/HomeStack";
 import HandsStack from "./hands/screens/HandsStack";

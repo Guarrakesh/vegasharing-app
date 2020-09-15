@@ -13,6 +13,11 @@ export default {
       dark: "#474ABA",
       light: "#A7A9FF"
     },
+    error: {
+      main: "#EA2027",
+      dark: "#C01218",
+      light: "#EB4046"
+    },
     white: "#fff",
     text: "#444",
   },
