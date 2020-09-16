@@ -5,6 +5,7 @@ import RoomsScreen from "./RoomsScreen"
 import CreateRoomScreen from "./CreateRoomScreen"
 import RoomDetailsScreen from "./RoomDetailScreen"
 import Icon from '@expo/vector-icons/AntDesign'
+import { MaterialIcons } from '@expo/vector-icons';
 const Stack = createStackNavigator();
 
 const RoomsStack = ({navigation}) => {

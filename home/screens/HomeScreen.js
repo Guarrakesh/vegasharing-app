@@ -31,20 +31,20 @@ const HomeScreen = ({ navigation }) => {
 
   return (
       <View style={styles.container}>
-        <View style={{ backgroundColor: '#fefdaa', width: 300, height: 140, borderRadius: 12, padding: 12}}>
-          <View style={{ height: 10, width: '100%', backgroundColor: backgroundColor }}></View>
-          <Text>Welcome to VEGA-sharing, { user ? user.name : ""} { user ? user.lastname : ""}</Text>
-          <Text>{user && user.email}</Text>
-          {authenticated ? <Button onPress={onTokenPress} title={"Premi per visualizzare la token"}/>
+            <View style={{ backgroundColor: '#fefdaa', width: 300, height: 140, borderRadius: 12, padding: 12}}>
+            <View style={{ height: 10, width: '100%', backgroundColor: backgroundColor }}></View>
+            <Text>Welcome to VEGA-sharing, { user ? user.name : ""} { user ? user.lastname : ""}</Text>
+            <Text>{user && user.email}</Text>
+            <Button onPress={() => navigation.navigate('AuthStack')} title="Accedi" />
+            {authenticated ? <Button onPress={onTokenPress} title={"Premi per visualizzare la token"}/>
               : <Text>Non sei autenticato</Text>
-          }
-
-          <TextInput style={{ backgroundColor: '#fff', padding: 12 }} onChangeText={setText} value={text}/>
-          <Button title="Vai al post" onPress={() => {
+            }
+            <TextInput style={{ backgroundColor: '#fff', padding: 12 }} onChangeText={setText} value={text}/>
+            <Button title="Vai al post" onPress={() => {
             navigation.navigate('SecondScreen', { id: text });
-          }}/>
+            }}/>
 
-          <Button onPress={() => navigation.navigate('AuthStack')} title="Accedi" />
+
         </View>
         <StatusBar style="auto" />
       </View>
