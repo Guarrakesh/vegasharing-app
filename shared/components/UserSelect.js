@@ -64,6 +64,7 @@ const UserSelect = ({ style, textInputStyle, onSelect }) => {
 
   const handleSelect = (user) => {
     onSelect(user);
+    setDirty(false);
   }
   return (
       <>
@@ -94,8 +95,8 @@ const UserSelect = ({ style, textInputStyle, onSelect }) => {
 const makeStyles = (theme) => StyleSheet.create({
   root: {
 
-    borderRadius: theme.borders.borderRadius3,
-    backgroundColor: theme.backgroundColor,
+    borderRadius: theme.textInput.borderRadius,
+    backgroundColor: theme.textInput.backgroundColor,
     ...theme.elevation[4],
   },
   textInput: {
@@ -110,7 +111,7 @@ const makeStyles = (theme) => StyleSheet.create({
   },
   resultsView: {
     width: '100%',
-    backgroundColor: theme.backgroundColor,
+    backgroundColor: theme.textInput.backgroundColor,
     marginTop: 24,
 
   }

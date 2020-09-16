@@ -12,8 +12,7 @@ export class AuthError extends APIError {
 }
 export async function refreshToken(token) {
   try {
-    const body = { email, password };
-    const response =  await post(endpoints.AUTH.REFRESH_TOKEN, body );
+    const response =  await post(endpoints.AUTH.REFRESH_TOKEN, token );
     return response;
   } catch (error) {
     if (error instanceof APIError) {

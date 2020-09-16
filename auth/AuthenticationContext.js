@@ -50,6 +50,8 @@ export default function AuthContextProvider({ children }) {
       const nAttempts = 5;
       let attempts = 0;
       const interval = setInterval(() => {
+
+        console.log(isRefreshing.current);
         console.log("[] ... ");
         if (attempts === nAttempts) { // raggiunto il num max di tentativi
           clearInterval(interval);
@@ -94,11 +96,12 @@ export default function AuthContextProvider({ children }) {
   const callRefreshToken = async () => {
     isRefreshing.current = true;
     try {
+      console.log("[AuthContext] Refreshing token...");
       const response = await refreshToken(tokenRef.current.refreshToken);
       console.log("[AuthContext] Refresh done: " + response.data, response);
       await onLoginSuccess(userRef.current, response.data);
     } catch (ex) {
-      console.log("[AuthContext] Refresh failed, logging out.");
+      console.log("[AuthContext] Refresh failed, logging out (" + ex.message + ")", ex);
       setState({ ...state, authenticated: false, token: null });
     } finally {
       isRefreshing.current = false;

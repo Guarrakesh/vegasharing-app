@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import {SafeAreaView, ScrollView, Text, View, TouchableOpacity, TextInput, Button} from "react-native";
 import Icon from '@expo/vector-icons/AntDesign'
 import UserSelect from "../../shared/components/UserSelect";
+import {useErrorContext} from "../../shared/notification/ErrorContext";
 import {useTheme} from "../../shared/theme/ThemeContext";
 import {useAPI} from "../../shared/api/APIContext";
 import {useAuth} from "../../auth/AuthenticationContext";
@@ -9,7 +10,7 @@ import {post} from "../../shared/api/fetch";
 import endpoints from "../../shared/endpoints";
 import {APIError} from "../../shared/api/APIError";
 import {AuthError} from "../../auth/api/signup";
-
+import routes from '../../shared/routes';
 
 
 const CreateRoomScreen=({navigation}) => {
@@ -17,12 +18,14 @@ const CreateRoomScreen=({navigation}) => {
   const theme = useTheme();
   const { user } = useAuth();
   const { post } = useAPI();
+  const { addError, removeError } = useErrorContext();
   const [name, setName] = useState(null);
   const [description, setDescription] = useState(null);
   const [selectedUsers, setSelectedUsers] = useState({});
   const styles = makeStyles(theme);
-  const addUser = (user) => {
-    setSelectedUsers({...selectedUsers, [user._id]: user});
+  const addUser = (addedUser) => {
+    if (addedUser._id === user.id) return;
+    setSelectedUsers({...selectedUsers, [addedUser._id]: addedUser});
   }
   const removeUsers = (key) => {
     const newUsers = { ...selectedUsers };
@@ -30,34 +33,56 @@ const CreateRoomScreen=({navigation}) => {
     setSelectedUsers(newUsers);
   }
 
-
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+          <Button onPress={createRoom} title="Done" disabled={!name || Object.keys(selectedUsers).length === 0}/>
+      )
+    })
+  });
   const createRoom = async () => {
       try {
-          const response = await post(endpoints.ROOMS.POST, {name, description, selectedUsers, user: user.id});
-          console.log(response);
+        removeError();
+        const userIds = Object.keys(selectedUsers);
+        if (!name || userIds.length === 0) {
+          addError("Please fill the name and the room users fields");
+          return;
+        }
+          await post(endpoints.ROOMS.POST, {
+            name,
+            description,
+            userIds,
+            creatorId: user.id
+          });
+          navigation.goBack();
       } catch(error) {
-        console.log(error);
+        if (error.response && error.response.data) {
+          addError(error.response.data);
+        } else {
+          addError(error.message ?? error);
+        }
       }
   }
 
-    console.log(name + " " + description + " " + selectedUsers);
-
     return (
-        <SafeAreaView style={{backgroundColor: theme.palette.primary.light, flex: 1, justifyContent: 'flex-start', alignItems: 'center'}}>
+        <SafeAreaView style={{backgroundColor: theme.backgroundColor, flex: 1, justifyContent: 'flex-start', alignItems: 'center'}}>
 
           <ScrollView
               style={{flex: 1, width: '80%'}}
               contentContainerStyle={{marginTop: 48}}>
-              <Text style={{ color: '#EDFF00', textAlign: 'left'}}>Name</Text>
+            <Text style={{ color: theme.palette.primary.main, fontSize: 34, fontWeight: '700', marginBottom: 24 }}>Create a room</Text>
+              <Text style={theme.textInput.label}>Name</Text>
               <TextInput
+                  placeholder="Type the name of the room"
                   textContentType="name"
                   style={styles.textInputStyle} onChangeText={setName}/>
 
-              <Text style={{ color: '#EDFF00', marginTop: 16}}>Description</Text>
+              <Text style={theme.textInput.label}>Description</Text>
               <TextInput
+                  placeholder="Write a description"
                   textContentType="description"
                   style={styles.textInputStyle} onChangeText={setDescription}/>
-              <Text style={{ color: '#EDFF00', marginTop: 16}}>Utenti</Text>
+              <Text style={theme.textInput.label}>Utenti</Text>
               <UserSelect
                   onSelect={addUser}
                   style={{
@@ -75,12 +100,7 @@ const CreateRoomScreen=({navigation}) => {
                     </View>
                 ))}
               </View>
-              <TouchableOpacity title="Create room"
-                                onPress={createRoom}
-                                disabled={!name}
-                                style={styles.buttonStyle(!name)}>
-                  <Text style={{color: '#FC4710', fontSize: 16, fontWeight: '600'}}>Create Room</Text>
-              </TouchableOpacity>
+
 
             </ScrollView>
 
@@ -95,8 +115,8 @@ const makeStyles = theme => ({
     marginTop: 12,
     paddingHorizontal: 8,
     paddingVertical: 16,
-    backgroundColor: theme.backgroundColor,
-    borderRadius: theme.borders.borderRadius3,
+    backgroundColor: theme.textInput.backgroundColor,
+    borderRadius: theme.textInput.borderRadius,
     ...theme.elevation[4],
   },
   removeIcon: {
@@ -104,12 +124,11 @@ const makeStyles = theme => ({
     position: 'absolute',
   },
   textInputStyle: {
-    marginTop: 8,
-    backgroundColor: theme.backgroundColor,
-    paddingVertical: 8,
+    backgroundColor: theme.textInput.backgroundColor,
+    marginBottom: theme.textInput.marginBottom,
+    paddingVertical: 12,
     paddingHorizontal: 12,
     width: '100%',
-    borderRadius: theme.borders.borderRadius3,
   },
    buttonStyle: (disabled) => ({
         marginTop: 24,

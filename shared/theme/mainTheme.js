@@ -25,10 +25,23 @@ export default {
     ...shadows
   },
 
-  backgroundColor: '#fff',
+  backgroundColor: '#efefef',
+  textInput: {
+    backgroundColor: '#fff',
+    borderRadius: 4,
+    marginBottom: 16,
+    label: {
+      fontWeight: '600',
+      color: '#444',
+      fontSize: 15,
+      marginBottom: 4,
+      textAlign: 'left',
+    }
+  },
   card: {
     borderRadius: 25
   },
+
   borders: {
     color: '#dfdfdf',
     borderRadius1: 4,

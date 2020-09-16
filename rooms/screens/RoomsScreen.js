@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {SafeAreaView, ScrollView, StyleSheet} from 'react-native';
+import {SafeAreaView, ScrollView, RefreshControl, StyleSheet, ActivityIndicator} from 'react-native';
 import {useAuth} from "../../auth/AuthenticationContext";
 import {useAPI} from "../../shared/api/APIContext";
 import endpoints from "../../shared/endpoints";
@@ -24,13 +24,17 @@ const RoomsScreen = ({navigation}) => {
     let getRoomsUrl = endpoints.ROOMS.GET_MANY;
     const fetchRooms = async () => {
         try {
+            setIsLoading(true);
             const rooms = await get(getRoomsUrl, { userId: user.id });
             setRooms(rooms.data);
         } catch (exception) {
             console.log("Impossibile leggere le stanze: " + exception.response.data.message);
+        } finally {
+            setIsLoading(false);
         }
     }
 
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         fetchRooms();
@@ -38,9 +42,13 @@ const RoomsScreen = ({navigation}) => {
 
     const onCardPress=(room)=>{navigation.navigate('Details Room', {id:room._id, room})};
 
+  //   const orderedRooms = rooms.sort((a, b) => a.createdAt > b.createdAt);
     return (
         <SafeAreaView style={styles.container} >
-            <ScrollView contentContainerStyle={{justifyContent: 'center', alignItems: 'center'}}>
+            {/* isLoading ? <ActivityIndicator/> : null */}
+            <ScrollView
+                refreshControl={<RefreshControl onRefresh={fetchRooms} refreshing={isLoading}/>}
+                contentContainerStyle={{justifyContent: 'center', alignItems: 'center'}}>
                 { rooms.map(room => (<RoomCard key={room._id} room={room} onPress={()=> onCardPress(room)}/>))}
             </ScrollView>
         </SafeAreaView>
