@@ -14,5 +14,11 @@ export default {
 
   USERS: {
     GET_MANY: '/users'
+  },
+
+  SESSIONS: {
+    POST: "/sessions/create",
+    GET_BY_ROOM: "/sessions/room",
+    GET_BY_CREATOR: "/sessions/creator"
   }
 }

@@ -2160,9 +2160,10 @@ expo-asset@~8.1.7:
     path-browserify "^1.0.0"
     url-parse "^1.4.4"
 
-expo-blur@^8.1.2:
+expo-blur@~8.1.2:
   version "8.1.2"
   resolved "https://registry.yarnpkg.com/expo-blur/-/expo-blur-8.1.2.tgz#d8f12d6492f3df264a1eaae8a15c22b3a283375e"
+  integrity sha512-Z/NCe59rDR9D54FEZNisRybZwihfE9EQfolgchmra9wt89eryXMtxR9ciHn6n0F/BImOiS6UhzQZIE4SRs76Eg==
   dependencies:
     prop-types "^15.6.0"
 
@@ -3514,6 +3515,18 @@ mkdirp@^0.5.1:
   dependencies:
     minimist "^1.2.5"
 
+moment-timezone@^0.5.31:
+  version "0.5.31"
+  resolved "https://registry.yarnpkg.com/moment-timezone/-/moment-timezone-0.5.31.tgz#9c40d8c5026f0c7ab46eda3d63e49c155148de05"
+  integrity sha512-+GgHNg8xRhMXfEbv81iDtrVeTcWt0kWmTEY1XQK14dICTXnWJnT0dxdlPspwqF3keKMVPXwayEsk1DI0AA/jdA==
+  dependencies:
+    moment ">= 2.9.0"
+
+"moment@>= 2.9.0", moment@^2.28.0:
+  version "2.28.0"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.28.0.tgz#cdfe73ce01327cee6537b0fafac2e0f21a237d75"
+  integrity sha512-Z5KOjYmnHyd/ukynmFd/WwyXHd7L4J9vTI/nn5Ap9AVUgaAE15VvQ9MOGmJJygEUklupqIrFnor/tjTwRU+tQw==
+
 ms@2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
@@ -3977,6 +3990,11 @@ react-native-safe-area-context@~3.0.7:
 react-native-screens@~2.9.0:
   version "2.9.0"
   resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-2.9.0.tgz#ead2843107ba00fee259aa377582e457c74f1f3b"
+
+react-native-simple-device-info@^0.24.2:
+  version "0.24.2"
+  resolved "https://registry.yarnpkg.com/react-native-simple-device-info/-/react-native-simple-device-info-0.24.2.tgz#1ffb3006777d83017019d4fc69d1934d5b99fd28"
+  integrity sha512-0MO2bmCCIfNN+PhweM/VhgSfi0d5VEtKC72eiNP3j6TtCmkLnSdKjsDqzq0+ENDXV3EjF7V9y4V4y9MdSec/Sg==
 
 react-native-web@~0.11.7:
   version "0.11.7"

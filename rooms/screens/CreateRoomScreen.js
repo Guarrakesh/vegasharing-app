@@ -75,13 +75,11 @@ const CreateRoomScreen=({navigation, style}) => {
               <Text style={theme.textInput.label}>Name</Text>
               <TextInput
                   placeholder="Type the name of the room"
-                  textContentType="name"
                   style={styles.textInputStyle} onChangeText={setName}/>
 
               <Text style={theme.textInput.label}>Description</Text>
               <TextInput
                   placeholder="Write a description"
-                  textContentType="description"
                   style={styles.textInputStyle} onChangeText={setDescription}/>
               <Text style={theme.textInput.label}>Utenti</Text>
               <UserSelect

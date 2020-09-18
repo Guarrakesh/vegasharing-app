@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {SafeAreaView, ScrollView, RefreshControl, StyleSheet, ActivityIndicator} from 'react-native';
+import {SafeAreaView, ScrollView, RefreshControl, StyleSheet} from 'react-native';
 import {useAuth} from "../../auth/AuthenticationContext";
 import {useAPI} from "../../shared/api/APIContext";
 import endpoints from "../../shared/endpoints";
@@ -40,7 +40,7 @@ const RoomsScreen = ({navigation, style}) => {
         fetchRooms();
     }, []);
 
-    const onCardPress=(room)=>{navigation.navigate('Details Room', {id:room._id, room})};
+    const onCardPress=(room)=>{navigation.navigate('Details Room', {roomId:room._id, room})};
 
   //   const orderedRooms = rooms.sort((a, b) => a.createdAt > b.createdAt);
     return (

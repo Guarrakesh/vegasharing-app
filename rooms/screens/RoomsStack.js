@@ -1,14 +1,14 @@
 import {createStackNavigator, useHeaderHeight} from "@react-navigation/stack";
 import React from 'react';
-import {Button, TouchableOpacity, StyleSheet} from "react-native";
+import {TouchableOpacity, StyleSheet} from "react-native";
 import {useTheme} from "../../shared/theme/ThemeContext";
 import RoomsScreen from "./RoomsScreen"
 import CreateRoomScreen from "./CreateRoomScreen"
 import RoomDetailsScreen from "./RoomDetailScreen"
 import Icon from '@expo/vector-icons/AntDesign'
-import { MaterialIcons } from '@expo/vector-icons';
 const Stack = createStackNavigator();
 import { BlurView } from 'expo-blur';
+import CreateHandScreen from "../../hands/screens/CreateHandScreen";
 
 
 const withMarginTop = (Screen) => {
@@ -48,7 +48,8 @@ const RoomsStack = ({navigation}) => {
                           }
             />
             <Stack.Screen name="Create Room" component ={withMarginTop(CreateRoomScreen)} mode="modal"/>
-            <Stack.Screen name={"Details Room"} component={withMarginTop(RoomDetailsScreen)}/>
+            <Stack.Screen name="Details Room" component={withMarginTop(RoomDetailsScreen)}/>
+            <Stack.Screen name="Create Hand" component={CreateHandScreen}/>
             {/*  <Stack.Screen name="Signup" component={SecondHomeScreen}/>*/}
         </Stack.Navigator>
     )
