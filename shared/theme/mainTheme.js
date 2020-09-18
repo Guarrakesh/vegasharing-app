@@ -1,7 +1,7 @@
 import shadows from "./shadows";
 
 export default {
-
+  mode: 'light',
   palette: {
     primary: {
       main: "#F35729",
@@ -19,16 +19,29 @@ export default {
       light: "#EB4046"
     },
     white: "#fff",
-    text: "#444",
+    text: "#1f1f1f",
   },
   elevation: {
     ...shadows
   },
 
-  backgroundColor: '#fff',
-  card: {
-    borderRadius: 25
+  backgroundColor: '#efefef',
+  textInput: {
+    backgroundColor: '#fff',
+    borderRadius: 4,
+    marginBottom: 16,
+    label: {
+      fontWeight: '600',
+      color: '#444',
+      fontSize: 15,
+      marginBottom: 4,
+      textAlign: 'left',
+    }
   },
+  card: {
+    borderRadius: 12
+  },
+
   borders: {
     color: '#dfdfdf',
     borderRadius1: 4,

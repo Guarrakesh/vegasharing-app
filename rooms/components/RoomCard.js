@@ -30,13 +30,13 @@ const makeStyles = function(theme) {
   return StyleSheet.create({
     touchable:{
       flex: 1,
+      width: '100%',
       backgroundColor: theme.palette.accent.main,
       marginTop: 25,
       borderRadius: theme.card.borderRadius,
       justifyContent: 'center',
       paddingHorizontal: 20,
       paddingVertical: 24,
-      width: "85%",
       height: "100%",
       ...theme.elevation[8],
     },

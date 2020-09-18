@@ -4,7 +4,7 @@ import {APIError} from "./APIError";
 
 
 const serverHost = 'http://localhost:3000';
-
+//const serverHost = 'http://10.0.2.2:3000';
 export const addRequestInterceptor = (callback => axios.interceptors.request.use(callback) );
 export const removeRequestInterceptor = (interceptor) => axios.interceptors.request.eject(interceptor);
 export const addResponseInterceptor = (callback) => axios.interceptors.response.use(callback);
@@ -29,7 +29,7 @@ export async function fetchAPI(endpoint, method, options)
       return resp;
       }
       case 'post': {
-        return await axios.post(serverHost + endpoint, options.data)
+        return await axios.post(serverHost + endpoint, options.data, options)
       }
       default:
         throw new Error("Metodo non supportato.");
@@ -73,6 +73,7 @@ export async function post(endpoint, body, options)
 {
   return await fetchAPI(endpoint, 'POST', {
       data: body,
+
       ...options
     });
 

@@ -2,7 +2,7 @@ export default {
   ROOMS: {
     GET_MANY: "/rooms",
     GET_ONE: "/rooms/:id",
-    POST: "/rooms",
+    POST: "/rooms/create",
     DELETE: "/rooms",
   },
 
