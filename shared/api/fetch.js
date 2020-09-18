@@ -29,7 +29,7 @@ export async function fetchAPI(endpoint, method, options)
       return resp;
       }
       case 'post': {
-        return await axios.post(serverHost + endpoint, options.data)
+        return await axios.post(serverHost + endpoint, options.data, options)
       }
       default:
         throw new Error("Metodo non supportato.");
@@ -73,6 +73,7 @@ export async function post(endpoint, body, options)
 {
   return await fetchAPI(endpoint, 'POST', {
       data: body,
+
       ...options
     });
 

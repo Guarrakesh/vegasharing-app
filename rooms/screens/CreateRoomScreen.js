@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import {SafeAreaView, ScrollView, Text, View, TouchableOpacity, TextInput, Button} from "react-native";
 import Icon from '@expo/vector-icons/AntDesign'
+import UserAvatar from "../../shared/components/UserAvatar";
 import UserSelect from "../../shared/components/UserSelect";
 import {useErrorContext} from "../../shared/notification/ErrorContext";
 import {useTheme} from "../../shared/theme/ThemeContext";
@@ -13,7 +14,7 @@ import {AuthError} from "../../auth/api/signup";
 import routes from '../../shared/routes';
 
 
-const CreateRoomScreen=({navigation}) => {
+const CreateRoomScreen=({navigation, style}) => {
 
   const theme = useTheme();
   const { user } = useAuth();
@@ -65,7 +66,7 @@ const CreateRoomScreen=({navigation}) => {
   }
 
     return (
-        <SafeAreaView style={{backgroundColor: theme.backgroundColor, flex: 1, justifyContent: 'flex-start', alignItems: 'center'}}>
+        <SafeAreaView style={[{backgroundColor: theme.backgroundColor, flex: 1, justifyContent: 'flex-start', alignItems: 'center'}, style]}>
 
           <ScrollView
               style={{flex: 1, width: '80%'}}
@@ -92,7 +93,8 @@ const CreateRoomScreen=({navigation}) => {
                   }}/>
               <View style={styles.userList}>
                 {Object.keys(selectedUsers).map(key => (
-                    <View style={{ marginBottom: 12}}>
+                    <View style={{ marginBottom: 12, flexDirection: 'row', alignItems: 'center'}}>
+                      <UserAvatar user={selectedUsers[key]} size={"small"}/>
                       <Text>{selectedUsers[key].username || (selectedUsers[key].name + " " + selectedUsers[key].lastname)}</Text>
                       <TouchableOpacity onPress={() => removeUsers(key)} style={styles.removeIcon}>
                         <Icon name="minuscircleo" size={16}/>

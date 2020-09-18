@@ -4,6 +4,8 @@ import {useAPI} from "../shared/api/APIContext";
 import {KEY_USER, KEY_USER_TOKEN} from "./api/login";
 import {refreshToken} from "./api/refreshToken";
 
+const X_HEADER_REFRESHTOKEN = 'refresh-token';
+
 export const AuthContext = React.createContext({
   authenticated: true,
   user: {},
@@ -12,10 +14,16 @@ export const AuthContext = React.createContext({
   onLoginSuccess: () => {}
 });
 
-
+/**
+ * Controlla se la token è scaduta
+ * Per sicurezza, la ritiene scaduta 10 secondi prima dell'effettiva scadenza
+ * @param token
+ */
 const checkTokenExpired = (token) => {
   const expires = new Date(token.expiresIn);
-  return (new Date() > expires);
+
+  const current = new Date(Date.now() - 10000);
+  return (current > expires );
 };
 
 export default function AuthContextProvider({ children }) {
@@ -55,7 +63,7 @@ export default function AuthContextProvider({ children }) {
         console.log("[] ... ");
         if (attempts === nAttempts) { // raggiunto il num max di tentativi
           clearInterval(interval);
-          reject("Timeout waiting refresh token");
+          reject(new Error("Timeout waiting refresh token"));
         }
         if (!isRefreshing.current) { // refreshing finito, risolvi
           clearInterval(interval);
@@ -71,37 +79,43 @@ export default function AuthContextProvider({ children }) {
    * @return {Promise<void>}
    */
   const addTokenInterceptor = async (request) => {
-      if (request.headers && request.headers.Authorization) {
-        return request;
-      } else {
-
-        if (tokenRef.current) {
-          console.log("[AuthContext] Check if there is refresh token...");
-          await waitForRefresh();
-          if (checkTokenExpired(tokenRef.current)) {
-            console.log("[AuthContext] Token expired. Refreshing ...");
-            await callRefreshToken();
-          }
-          request.headers = {
-            ...(request.headers ?? {}),
-            Authorization: 'Bearer ' + tokenRef.current.accessToken
-          };
+    if (request.headers && request.headers.Authorization ||
+        request.headers['x-action'] === X_HEADER_REFRESHTOKEN) {
+      return request;
+    } else {
+      console.log(`[AuthContext] Intercepting request ${request.method} ${request.url}`);
+      if (tokenRef.current) {
+        console.log(`[AuthContext]Check if there is Token is fresh...`);
+        await waitForRefresh();
+        if (checkTokenExpired(tokenRef.current)) {
+          console.log("[AuthContext] Token expired. Refreshing ...");
+          await callRefreshToken();
+        } else {
+          console.log(`[AuthContext] AccessToken ok.`)
         }
 
-
+        request.headers = {
+          ...(request.headers ?? {}),
+          Authorization: 'Bearer ' + tokenRef.current.accessToken
+        };
         return request;
       }
-    };
+    }
+  };
 
   const callRefreshToken = async () => {
     isRefreshing.current = true;
     try {
       console.log("[AuthContext] Refreshing token...");
-      const response = await refreshToken(tokenRef.current.refreshToken);
-      console.log("[AuthContext] Refresh done: " + response.data, response);
+      console.log(tokenRef.current.refreshToken);
+      const response = await refreshToken(tokenRef.current.refreshToken, {
+        headers: { 'x-action': X_HEADER_REFRESHTOKEN}
+      });
+      console.log("[AuthContext] Refresh done");
       await onLoginSuccess(userRef.current, response.data);
+      tokenRef.current = response.data;
     } catch (ex) {
-      console.log("[AuthContext] Refresh failed, logging out (" + ex.message + ")", ex);
+      console.log("[AuthContext] Refresh failed, logging out (" + (ex.response.data.message ?? ex.message) + ")");
       setState({ ...state, authenticated: false, token: null });
     } finally {
       isRefreshing.current = false;

@@ -10,11 +10,12 @@ export class AuthError extends APIError {
     this.type = type;
   }
 }
-export async function refreshToken(token) {
+export async function refreshToken(token, options = {}) {
   try {
-    const response =  await post(endpoints.AUTH.REFRESH_TOKEN, token );
+    const response =  await post(endpoints.AUTH.REFRESH_TOKEN, { token }, options);
     return response;
   } catch (error) {
+
     if (error instanceof APIError) {
       throw new AuthError(error, error.response.data.type)
     } else {

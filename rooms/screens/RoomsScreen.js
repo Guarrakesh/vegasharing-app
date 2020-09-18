@@ -16,7 +16,7 @@ import RoomCard from "../components/RoomCard";
 //         description: "Description 2"
 //     }
 // ]
-const RoomsScreen = ({navigation}) => {
+const RoomsScreen = ({navigation, style}) => {
 
     const [rooms, setRooms] = useState([]);
     const { user } = useAuth();
@@ -44,11 +44,11 @@ const RoomsScreen = ({navigation}) => {
 
   //   const orderedRooms = rooms.sort((a, b) => a.createdAt > b.createdAt);
     return (
-        <SafeAreaView style={styles.container} >
+        <SafeAreaView style={[styles.container, style]} >
             {/* isLoading ? <ActivityIndicator/> : null */}
             <ScrollView
                 refreshControl={<RefreshControl onRefresh={fetchRooms} refreshing={isLoading}/>}
-                contentContainerStyle={{justifyContent: 'center', alignItems: 'center'}}>
+                contentContainerStyle={{paddingHorizontal: 16, justifyContent: 'center', alignItems: 'center'}}>
                 { rooms.map(room => (<RoomCard key={room._id} room={room} onPress={()=> onCardPress(room)}/>))}
             </ScrollView>
         </SafeAreaView>
