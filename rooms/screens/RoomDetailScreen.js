@@ -4,9 +4,9 @@ import {SafeAreaView, ScrollView, Text, View} from "react-native";
 
 
 
-const RoomDetailsScreen=({navigation}) => {
+const RoomDetailsScreen=({navigation, style}) => {
     return (
-        <SafeAreaView>
+        <SafeAreaView style={[style]}>
             <View>
                 <Text>Details Room</Text>
             </View>

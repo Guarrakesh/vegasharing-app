@@ -24,7 +24,6 @@ const RoomsScreen = ({navigation, style}) => {
     let getRoomsUrl = endpoints.ROOMS.GET_MANY;
     const fetchRooms = async () => {
         try {
-            console.log(user);
             const rooms = await get(getRoomsUrl, { userId: user._id });
             setRooms(rooms.data);
         } catch (exception) {

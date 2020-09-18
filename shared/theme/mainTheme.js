@@ -18,8 +18,19 @@ export default {
       dark: "#C01218",
       light: "#EB4046"
     },
+    info: {
+      main: "#007AFF",
+      dark: "#007AFF",
+      light: "#48A0FF",
+    },
+    success: {
+      main: "#00C554",
+      dark: "#0D9045",
+      light: "#0EEB6C"
+    },
     white: "#fff",
     text: "#1f1f1f",
+    textSecondary: "#6e6e6e"
   },
   elevation: {
     ...shadows
@@ -30,7 +41,9 @@ export default {
     backgroundColor: '#fff',
     borderRadius: 4,
     marginBottom: 16,
+    fontSize: 16,
     label: {
+      fontFamily: 'AvenirNextLTPro-Regular',
       fontWeight: '600',
       color: '#444',
       fontSize: 15,
