@@ -1,11 +1,13 @@
 import React, { useState} from 'react';
-import { SafeAreaView, Text, StyleSheet, TextInput, TouchableOpacity, View, Image } from 'react-native';
+import { SafeAreaView, Text, StyleSheet, TextInput, TouchableOpacity, View, Image, ScrollView } from 'react-native';
 import {useAPI} from "../../shared/api/APIContext";
+import Typography from "../../shared/components/Typography";
 import {useErrorContext} from "../../shared/notification/ErrorContext";
 import {useTheme} from "../../shared/theme/ThemeContext";
 import {login} from "../api/login";
 import {useAuth} from "../AuthenticationContext";
 import routes from "../../shared/routes";
+import Icon from '@expo/vector-icons/AntDesign'
 
 import Logo from '../../assets/logo/logo.png';
 
@@ -35,15 +37,15 @@ const LoginScreen = ({ navigation }) => {
   }
 
   return (
-      <View style={{backgroundColor: theme.backgroundColor, flex: 1,  alignItems: 'center'}}>
+      <SafeAreaView style={{backgroundColor: theme.palette.primary.main, flex: 1}}>
+        <View style={{ flex: 0.4,backgroundColor: theme.backgroundColor, borderBottomRightRadius: 75, paddingVertical: 50, paddingHorizontal: 32} }>
 
-        <SafeAreaView style={styles.header}>
-          <Image style={{ alignSelf: 'center', marginBottom: 12}} source={Logo}/>
+          {/*<SafeAreaView style={styles.header}>
 
-        </SafeAreaView>
-        <View style={{paddingTop: 42, backgroundColor: theme.backgroundColor, flex: 3, flexBasis: "70%", width: '100%', alignItems: 'center' }}>
+        </SafeAreaView>*/}
+          <ScrollView
+              contentContainerStyle={{paddingTop: 42, backgroundColor: theme.backgroundColor, flex: 3, flexBasis: "70%", width: '100%', alignItems: 'flex-start' }}>
 
-          <View style={{ width: '80%', flex: 1, justifyContent: 'center'}}>
             <Text style={{ color: theme.palette.text}}>Username</Text>
             <TextInput
                 placeholder="Username"
@@ -54,24 +56,35 @@ const LoginScreen = ({ navigation }) => {
             <Text style={{color:  theme.palette.text, marginTop: 16}}>Password</Text>
             <TextInput placeholder="Password" secureTextEntry={true} style={styles.textInputStyle} onChangeText={setPassword}/>
 
-            <TouchableOpacity title="Login"
-                              onPress={submit}
-                              disabled={!username || !password}
 
-                              style={styles.buttonStyle(!username || !password)}>
-              <Text style={{color: theme.palette.white, fontSize: 16, fontWeight: '600'}}>Accedi</Text>
-            </TouchableOpacity>
+          </ScrollView>
+        </View>
+        <View style={{ flex: 0.7}}>
+          <View style={{ ...StyleSheet.absoluteFillObject, backgroundColor: theme.backgroundColor}}/>
+          <View style={{ paddingTop: 38, justifyContent: 'flex-start', alignItems: 'center', flex: 1, backgroundColor: theme.palette.primary.main, borderTopLeftRadius: 75,}}>
+            <View style={{ alignItems: 'center', flexDirection: 'row', justifyContent: "center"}}>
+              <Typography variant="title" color="white" style={{ marginRight: 32, }}>Sign in</Typography>
+              <TouchableOpacity title="Login"
+                                onPress={submit}
+                                disabled={!username || !password}
+
+                                style={styles.buttonStyle(!username || !password)}>
+                <Icon color={theme.palette.primary.main} name="arrowright" size={24}/>
+              </TouchableOpacity>
+            </View>
 
             <TouchableOpacity
-                title={"Sign up"}
+                title={"No account yet? Sign up"}
                 onPress={() => navigation.navigate(routes.SIGNUP_SCREEN)}
-                style={{ marginTop: 32, flex: 1, alignSelf: 'center', width: '100%', textAlign: 'center'}}
+                style={{ alignSelf: 'flex-start', width: '100%', textAlign: 'left', width: '100%'}}
             >
-              <Text style={styles.signup} textDecorationLine="underline">Sign up</Text>
+              <Text style={styles.signup} textDecorationLine="underline">No account yet? Sign up</Text>
             </TouchableOpacity>
+            <Image style={{ alignSelf: 'center', position: 'absolute', bottom: 0, marginBottom: 12}} source={Logo}/>
+
           </View>
         </View>
-      </View>
+      </SafeAreaView>
   )
 }
 
@@ -85,14 +98,13 @@ const makeStyles = theme => StyleSheet.create({
     borderRadius: 4,
   },
   buttonStyle: (disabled) => ({
-    marginTop: 24,
-    backgroundColor: disabled ? "rgba(210,210,210,0.36)":  theme.palette.primary.main,
-    paddingVertical: 12,
-    borderRadius: 4,
-    width: '100%',
+    backgroundColor: disabled ? "rgba(210,210,210,0.36)": '#fff',
+
+    borderRadius: 100,
+    height: 70,
+    width: 70,
     justifyContent: 'center',
     alignItems: 'center',
-    color: theme.palette.white,
     paddingHorizontal: 16
   }),
   header: {
