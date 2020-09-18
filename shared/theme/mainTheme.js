@@ -36,7 +36,7 @@ export default {
     ...shadows
   },
 
-  backgroundColor: '#efefef',
+  backgroundColor: '#f8f8f8',
   textInput: {
     backgroundColor: '#fff',
     borderRadius: 4,
