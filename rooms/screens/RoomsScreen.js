@@ -24,8 +24,8 @@ const RoomsScreen = ({navigation, style}) => {
     let getRoomsUrl = endpoints.ROOMS.GET_MANY;
     const fetchRooms = async () => {
         try {
-            setIsLoading(true);
-            const rooms = await get(getRoomsUrl, { userId: user.id });
+            console.log(user);
+            const rooms = await get(getRoomsUrl, { userId: user._id });
             setRooms(rooms.data);
         } catch (exception) {
             console.log("Impossibile leggere le stanze: " + exception.response.data.message);

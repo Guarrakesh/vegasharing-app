@@ -21,7 +21,7 @@ const LoginScreen = ({ navigation }) => {
       onLoginSuccess(response.data.user, response.data.token);
       navigation.navigate(routes.HOME_SCREEN);
     } catch (ex) {
-      if (ex.response.status >= 400 && ex.response.status <= 499) {
+      if (ex.response && ex.response.status >= 400 && ex.response.status <= 499) {
         addError(`Login non riuscito, credenziali errate`);
       } else {
         addError(`Non è stato possibile autenticarti: ${ex.message} (${ex.status})`, ex.status)

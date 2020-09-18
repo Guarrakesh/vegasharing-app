@@ -3,8 +3,8 @@ import axios from 'axios';
 import {APIError} from "./APIError";
 
 
-const serverHost = 'http://localhost:3000';
-//const serverHost = 'http://10.0.2.2:3000';
+// const serverHost = 'http://localhost:3000';
+const serverHost = 'http://10.0.2.2:3000';
 export const addRequestInterceptor = (callback => axios.interceptors.request.use(callback) );
 export const removeRequestInterceptor = (interceptor) => axios.interceptors.request.eject(interceptor);
 export const addResponseInterceptor = (callback) => axios.interceptors.response.use(callback);
@@ -35,7 +35,7 @@ export async function fetchAPI(endpoint, method, options)
         throw new Error("Metodo non supportato.");
     }
   } catch (error) {
-    if (error.request) {
+    if (error.response) {
       throw new APIError(error.message, error.response.request, error.response);
     }
     throw (error);
@@ -54,10 +54,11 @@ export async function get(endpoint, params = {}, options)
   try {
 
     return await fetchAPI(buildEndpoint(endpoint, params), 'GET', options);
-
   } catch (error) {
-    if (error.request) {
+    if (error.response) {
       throw new APIError(error.message, error.response.request, error.response);
+    } else {
+      throw error;
     }
   }
 }
