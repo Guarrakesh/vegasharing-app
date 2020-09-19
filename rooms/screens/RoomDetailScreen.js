@@ -1,24 +1,25 @@
 import React, {useEffect, useState} from 'react';
-import {SafeAreaView, Text, StyleSheet, TouchableOpacity, ScrollView, RefreshControl} from 'react-native';
-import {useAuth} from "../../auth/AuthenticationContext";
+import {SafeAreaView, Text, StyleSheet, TouchableOpacity, ScrollView, RefreshControl, View} from 'react-native';
 import {useAPI} from "../../shared/api/APIContext";
 import endpoints from "../../shared/endpoints";
 import HandCard from "../../hands/components/HandCard";
 import Icon from '@expo/vector-icons/AntDesign'
 import {useTheme} from "../../shared/theme/ThemeContext";
+import UserAvatar from "../../shared/components/UserAvatar";
+
 
 
 
 const RoomDetailScreen = ({route, style, navigation}) => {
 
     const [hands, setHands] = useState([]);
-    const { user } = useAuth();
     const { get } = useAPI();
     const theme = useTheme();
     const styles = makeStyles(theme);
     const {room} = route.params;
     const users = room.users ;
-    const names = users.map( user => user.name + ' ' + user.lastname)
+
+
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
@@ -26,7 +27,8 @@ const RoomDetailScreen = ({route, style, navigation}) => {
                 <TouchableOpacity style={{ marginRight: 16 }} onPress={() => navigation.navigate('Create Hand', {room})}>
                 <Icon name="plus" size={18}/>
                 </TouchableOpacity>
-            )
+            ),
+            title: room.name
         })
     });
 
@@ -55,9 +57,15 @@ const RoomDetailScreen = ({route, style, navigation}) => {
             <ScrollView
                 refreshControl={<RefreshControl onRefresh={fetchHands} refreshing={isLoading}/>}
                 contentContainerStyle={{paddingHorizontal: 16}}>
-                <Text style={styles.titleRoom}>{room.name}</Text>
                 <Text style={styles.subtitle}>Utenti</Text>
-                <Text style={styles.text}>{names.join(', ')}</Text>
+
+                {Object.keys(users).map(key => (
+                    <View style={{ marginBottom: 12, flexDirection: 'row', alignItems: 'center'}} key={users[key]._id}>
+                        <UserAvatar user={users[key]} size={"medium"}/>
+                        <Text>{users[key].name + " " + users[key].lastname}</Text>
+                    </View>
+                        ))}
+
                 <Text style={styles.subtitle}>Active Hands</Text>
                 { hands.map(hand => (<HandCard key={hand._id} hand={hand}/>))}
 
@@ -74,13 +82,6 @@ const makeStyles = function(theme) {
             backgroundColor: "rgba(255,255,255, 0.4)",
         },
 
-        titleRoom: {
-            color: theme.palette.accent.main,
-            fontWeight: 'bold',
-            fontSize: 30,
-            textAlign: 'center',
-            marginTop: 12,
-        },
 
         subtitle: {
             color: theme.palette.text,
@@ -88,6 +89,7 @@ const makeStyles = function(theme) {
             fontSize: 24,
             textAlign: 'left',
             marginTop: 12,
+            marginBottom: 8,
         },
 
         text: {
