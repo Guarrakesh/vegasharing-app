@@ -1,14 +1,16 @@
-import AsyncStorage from "@react-native-community/async-storage";
-import {StatusBar} from "expo-status-bar";
+
 import React, { useState, useEffect } from 'react';
-import {Button, StyleSheet, Text, View, TextInput} from "react-native";
+import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity} from "react-native";
 import {useAuth} from "../../auth/AuthenticationContext";
-import {fetch} from "../../shared/api/fetch";
+import Typography from "../../shared/components/Typography";
+import UserAvatar from "../../shared/components/UserAvatar";
+import {useTheme} from "../../shared/theme/ThemeContext";
 
 const HomeScreen = ({ navigation }) => {
 
-    const { user, token, authenticated} = useAuth();
-
+  const { user, token, authenticated, logout} = useAuth();
+  const theme = useTheme();
+  const styles = makeStyles(theme);
   const onTokenPress = async () => {
 
     if (token) {
@@ -29,36 +31,75 @@ const HomeScreen = ({ navigation }) => {
     setBackgroundColor(colors[Math.floor(Math.random() * (colors.length-1))])
   }, [text]);
 
+  const doLogout = () => {
+    logout();
+  }
   return (
-      <View style={styles.container}>
-            <View style={{ backgroundColor: '#fefdaa', width: 300, height: 140, borderRadius: 12, padding: 12}}>
-            <View style={{ height: 10, width: '100%', backgroundColor: backgroundColor }}></View>
-            <Text>Welcome to VEGA-sharing, { user ? user.name : ""} { user ? user.lastname : ""}</Text>
-            <Text>{user && user.email}</Text>
-            <Button onPress={() => navigation.navigate('AuthStack')} title="Accedi" />
-            {authenticated ? <Button onPress={onTokenPress} title={"Premi per visualizzare la token"}/>
-              : <Text>Non sei autenticato</Text>
-            }
-            <TextInput style={{ backgroundColor: '#fff', padding: 12 }} onChangeText={setText} value={text}/>
-            <Button title="Vai al post" onPress={() => {
-            navigation.navigate('SecondScreen', { id: text });
-            }}/>
+      <SafeAreaView style={styles.root}>
+        <View style={styles.container}>
+          <View style={styles.userInfo}>
+            <UserAvatar user={user} size="small"/>
+            <Typography variant="subtitle" color={"text"}>
+              <Text>Welcome back, { user ? user.name : ""}</Text>
+            </Typography>
+            <TouchableOpacity style={styles.exit} onPress={doLogout}>
+              <Typography variant="caption">
+                Logout
+              </Typography>
+            </TouchableOpacity>
+          </View>
 
+          <View style={styles.hands}>
+            <Typography variant="body">
+              Your latest hands
 
+            </Typography>
+          </View>
+          <View style={styles.rooms}>
+            <Typography variant="body">
+              Your active rooms
+
+            </Typography>
+          </View>
         </View>
-        <StatusBar style="auto" />
-      </View>
+      </SafeAreaView>
+
   )
 };
 
 
-const styles = StyleSheet.create({
+const makeStyles = theme => StyleSheet.create({
+  root: {
+    flex: 1,
+    backgroundColor: theme.backgroundColor,
+
+  },
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    paddingHorizontal: 16,
+    paddingTop: 32,
+    backgroundColor: theme.backgroundColor,
   },
+  welcome: {
+    backgroundColor: theme.palette.info.light,
+    width: 300,
+    height: 140,
+    borderRadius: 12,
+    padding: 12
+  },
+  hands: {
+    marginBottom: 32,
+  },
+  userInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 32,
+  },
+  exit: {
+    position: 'absolute',
+    right: 0,
+
+  }
 });
 
 

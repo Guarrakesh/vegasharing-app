@@ -24,17 +24,20 @@ const RootStack = createStackNavigator();
 
 const MainNavigator = ({ navigation }) => {
 
-  const { authenticated} = useAuth();
+  const { authenticated } = useAuth();
   const theme = useTheme();
   useEffect(() => {
+    console.log(authenticated);
     if (!authenticated) {
-      navigation.navigate(routes.AUTH)
+      navigation.navigate(routes.AUTH);
     }
   }, [authenticated]);
 
   const  [fontsLoaded] = useCustomFonts();
 
   if (!fontsLoaded) return <AppLoading/>;
+
+
 
   return (
       <Tab.Navigator screenOptions={({ route }) => ({
@@ -43,7 +46,7 @@ const MainNavigator = ({ navigation }) => {
           switch (route.name) {
             case "Home":
               iconName = 'home'; break;
-            case "MyHands":
+            case routes.HANDS.STACK:
               iconName = 'sharealt'; break;
             case "Rooms":
               iconName = 'team'; break;
@@ -60,9 +63,9 @@ const MainNavigator = ({ navigation }) => {
                      }}
       >
         <Tab.Screen name="Home" component={HomeStack} />
-        <Tab.Screen name="MyHands" component={HandsStack}/>
+        <Tab.Screen name={routes.HANDS.STACK} options={{ title: "My Hands" }} component={HandsStack}/>
         <Tab.Screen name="Rooms" component={RoomsStack}/>
-        <Tab.Screen name="Settings" component={SettingsScreen}/>
+        {/*<Tab.Screen name="Settings" component={SettingsScreen}/>*/}
 
       </Tab.Navigator>
   )
@@ -77,7 +80,7 @@ export default function App() {
             <ErrorContextProvider>
               <NavigationContainer>
                 <RootStack.Navigator>
-                  <RootStack.Screen name="MainNavigation" component={MainNavigator} options={{ headerShown: false}}/>
+                  <RootStack.Screen name={routes.ROOT} component={MainNavigator} options={{ headerShown: false}}/>
                   <RootStack.Screen name={routes.AUTH} component={AuthStack} options={{ headerShown: false}} />
 
                 </RootStack.Navigator>

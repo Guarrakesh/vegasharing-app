@@ -42,7 +42,7 @@ const SecondHomeScreen = ({ navigation, route }) => {
 const HomeStack = () => {
   return (
       <Stack.Navigator>
-        <Stack.Screen name="HomeScreen" component={HomeScreen}/>
+        <Stack.Screen name="HomeScreen" component={HomeScreen} options={{ headerShown: false }}/>
         <Stack.Screen name="SecondScreen" component={SecondHomeScreen}/>
       </Stack.Navigator>
   )

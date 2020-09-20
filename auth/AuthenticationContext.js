@@ -11,6 +11,7 @@ export const AuthContext = React.createContext({
   user: {},
   token: {},
 
+  logout: () => {},
   onLoginSuccess: () => {}
 });
 
@@ -141,8 +142,14 @@ export default function AuthContextProvider({ children }) {
   const onLoginSuccess = async (user, token) => {
     await AsyncStorage.setItem(KEY_USER, JSON.stringify(user));
     await AsyncStorage.setItem(KEY_USER_TOKEN, JSON.stringify(token));
-    setState({ ...state, authenticated: true, user, token });
+    setState({ ...state, authenticated: true, user: { ...user, id: user._id}, token });
   };
+
+  const logout = async () => {
+    await AsyncStorage.removeItem(KEY_USER_TOKEN);
+    await AsyncStorage.removeItem(KEY_USER);
+    setState({ ...state, authenticated: false, token: {} });
+  }
 
   const preloadValues = async () => {
     const token = await AsyncStorage.getItem(KEY_USER_TOKEN);
@@ -158,14 +165,17 @@ export default function AuthContextProvider({ children }) {
         newState.authenticated = true;
         newState.token = JSON.parse(token);
       }
-    };
+    } else {
+      newState.authenticated = false;
+      newState.token = null;
+    }
     if (user) { newState.user = JSON.parse(user)};
     setState({ ...state, ...newState })
   }
 
 
   return (
-      <AuthContext.Provider value={{ onLoginSuccess, ...state}}>
+      <AuthContext.Provider value={{ onLoginSuccess, logout, ...state}}>
         {children}
       </AuthContext.Provider>
   )
