@@ -6,12 +6,16 @@ import RoomsScreen from "./RoomsScreen"
 import CreateRoomScreen from "./CreateRoomScreen"
 import RoomDetailsScreen from "./RoomDetailScreen"
 import Icon from '@expo/vector-icons/AntDesign'
-const Stack = createStackNavigator();
-const ModalStack = createStackNavigator();
+
+
 import { BlurView } from 'expo-blur';
 import CreateHandScreen from "../../hands/screens/CreateHandScreen";
 import routes from '../../shared/routes';
 
+
+
+const Stack = createStackNavigator();
+const ModalStack = createStackNavigator();
 const withMarginTop = (Screen) => {
   const height = useHeaderHeight();
   return (props) => React.createElement(Screen, { ...props, style: { marginTop: 120}})
@@ -21,9 +25,10 @@ const withMarginTop = (Screen) => {
 const Modal = () => {
   return (
       <ModalStack.Navigator mode="modal">
-        <Stack.Screen name={routes.ROOMS.CREATE_ROOM_SCREEN} component ={withMarginTop(CreateRoomScreen)}/>
-        <Stack.Screen name={routes.HANDS.CREATE_HAND_SCREEN} component={CreateHandScreen}/>
-
+        <Stack.Screen name={routes.ROOMS.CREATE_ROOM_SCREEN}
+                      component ={withMarginTop(CreateRoomScreen)}/>
+        <Stack.Screen name={routes.HANDS.CREATE_HAND_SCREEN}
+                      component ={withMarginTop(CreateHandScreen)}/>
       </ModalStack.Navigator>
   );
 }
@@ -59,7 +64,10 @@ const RoomsStack = ({navigation}) => {
                       }
         />
         <Stack.Screen name={routes.ROOMS.DETAIL} component={withMarginTop(RoomDetailsScreen)}/>
-        <Stack.Screen name={routes.ROOMS.CREATE_STACK} component={Modal}/>
+        <Stack.Screen name={routes.ROOMS.CREATE_STACK}
+                      options={{ title: null }}
+                      component={Modal}/>
+
         {/*  <Stack.Screen name="Signup" component={SecondHomeScreen}/>*/}
 
       </Stack.Navigator>

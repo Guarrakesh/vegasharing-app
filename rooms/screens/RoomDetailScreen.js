@@ -6,7 +6,7 @@ import HandCard from "../../hands/components/HandCard";
 import Icon from '@expo/vector-icons/AntDesign'
 import {useTheme} from "../../shared/theme/ThemeContext";
 import UserAvatar from "../../shared/components/UserAvatar";
-
+import routes from '../../shared/routes';
 
 
 
@@ -24,7 +24,12 @@ const RoomDetailScreen = ({route, style, navigation}) => {
     React.useLayoutEffect(() => {
         navigation.setOptions({
             headerRight: () => (
-                <TouchableOpacity style={{ marginRight: 16 }} onPress={() => navigation.navigate('Create Hand', {room})}>
+                <TouchableOpacity style={{ marginRight: 16 }} onPress={() =>
+                    navigation.navigate(routes.ROOMS.CREATE_STACK, {
+                        screen: routes.HANDS.CREATE_HAND_SCREEN,
+                        params: { room }
+                     //   params: { screen: routes.HANDS.CREATE_HAND_SCREEN, params: { room } }
+                    })}>
                 <Icon name="plus" size={18}/>
                 </TouchableOpacity>
             ),

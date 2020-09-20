@@ -15,7 +15,7 @@ const HandsScreen = ({navigation}) => {
     const fetchHands = async () => {
         try {
             setIsLoading(true);
-            const hands = await get(endpoints.SESSIONS.GET_BY_CREATOR, { creatorId: user.id });
+            const hands = await get(endpoints.SESSIONS.GET_BY_CREATOR, { creatorId: user.id || user._id });
             setHands(hands.data);
         } catch (exception) {
             console.log("Impossibile leggere le sessioni: " + exception.response.data.message);
@@ -46,6 +46,7 @@ const HandsScreen = ({navigation}) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        height: '100%',
         backgroundColor: "rgba(255,255,255, 0.4)",
     },
 })

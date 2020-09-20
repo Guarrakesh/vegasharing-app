@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {SafeAreaView, ScrollView, Text, TextInput, Button} from "react-native";
+import Typography from "../../shared/components/Typography";
 
 import {useErrorContext} from "../../shared/notification/ErrorContext";
 import {useTheme} from "../../shared/theme/ThemeContext";
@@ -24,11 +25,14 @@ const CreateHand=({navigation, style, route}) => {
 
 
     React.useLayoutEffect(() => {
-        navigation.setOptions({
-            headerRight: () => (
-                <Button onPress={createHand} title="Done" disabled={!name}/>
-            )
-        })
+        const parent = navigation.dangerouslyGetParent();
+        if (parent) {
+            parent.setOptions({
+                headerRight: () => (
+                    <Button onPress={createHand} title="Done" disabled={!name}/>
+                )
+            })
+        }
     });
     const createHand = async () => {
         try {
@@ -59,6 +63,7 @@ const CreateHand=({navigation, style, route}) => {
             <ScrollView
                 style={{flex: 1, width: '80%'}}
                 contentContainerStyle={{marginTop: 180}}>
+                <Typography variant="title" color="primary" style={{ marginBottom: 20 }}>Create a sharing hand</Typography>
                 <Text style={theme.textInput.label}>Name</Text>
                 <TextInput
                     placeholder="Type the name of the hand"

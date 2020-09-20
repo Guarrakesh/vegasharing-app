@@ -7,7 +7,7 @@ const UserAvatar = ({ user, size }) => {
 
   const theme = useTheme();
   const styles = makeStyles({size}, theme);
-  console.log(user);
+  if (!user || !user.name) return null;
   return (
     <View style={styles.root}>
       <Text style={styles.text} >
