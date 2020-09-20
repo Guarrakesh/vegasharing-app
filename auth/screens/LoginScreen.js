@@ -1,3 +1,4 @@
+import {StatusBar} from "expo-status-bar";
 import React, { useState} from 'react';
 import { SafeAreaView, Text, StyleSheet, TextInput, TouchableOpacity, View, Image, ScrollView } from 'react-native';
 import {useAPI} from "../../shared/api/APIContext";
@@ -76,7 +77,7 @@ const LoginScreen = ({ navigation }) => {
             <TouchableOpacity
                 title={"No account yet? Sign up"}
                 onPress={() => navigation.navigate(routes.SIGNUP_SCREEN)}
-                style={{ alignSelf: 'flex-start', width: '100%', textAlign: 'left', width: '100%'}}
+                style={{ alignSelf: 'flex-start',textAlign: 'left', marginTop: 64, width: '100%'}}
             >
               <Text style={styles.signup} textDecorationLine="underline">No account yet? Sign up</Text>
             </TouchableOpacity>

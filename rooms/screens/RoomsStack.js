@@ -20,9 +20,11 @@ const withMarginTop = (Screen) => {
 
 const Modal = () => {
   return (
-      <ModalStack.Navigator mode="modal">
-        <Stack.Screen name={routes.ROOMS.CREATE_ROOM_SCREEN} component ={withMarginTop(CreateRoomScreen)}/>
-        <Stack.Screen name={routes.HANDS.CREATE_HAND_SCREEN} component={CreateHandScreen}/>
+      <ModalStack.Navigator mode="modal"
+          screenOptions={{ headerTransparent: true }}
+      >
+        <Stack.Screen name={routes.ROOMS.CREATE_ROOM_SCREEN}
+                      component ={withMarginTop(CreateRoomScreen)}/>
 
       </ModalStack.Navigator>
   );
