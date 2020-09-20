@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import {SafeAreaView, ScrollView, RefreshControl, StyleSheet, ActivityIndicator} from 'react-native';
+import {SafeAreaView, ScrollView, RefreshControl, StyleSheet} from 'react-native';
 import {useAuth} from "../../auth/AuthenticationContext";
 import {useAPI} from "../../shared/api/APIContext";
 import endpoints from "../../shared/endpoints";
 import RoomCard from "../components/RoomCard";
+import routes from '../../shared/routes';
 
 //
 // const rooms = [
@@ -24,7 +25,6 @@ const RoomsScreen = ({navigation, style}) => {
     let getRoomsUrl = endpoints.ROOMS.GET_MANY;
     const fetchRooms = async () => {
         try {
-            setIsLoading(true);
             const rooms = await get(getRoomsUrl, { userId: user.id });
             setRooms(rooms.data);
         } catch (exception) {
@@ -40,7 +40,7 @@ const RoomsScreen = ({navigation, style}) => {
         fetchRooms();
     }, []);
 
-    const onCardPress=(room)=>{navigation.navigate('Details Room', {id:room._id, room})};
+    const onCardPress=(room)=>{navigation.navigate(routes.ROOMS.DETAIL, {roomId:room._id, room})};
 
   //   const orderedRooms = rooms.sort((a, b) => a.createdAt > b.createdAt);
     return (
