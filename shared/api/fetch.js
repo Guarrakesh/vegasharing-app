@@ -3,8 +3,8 @@ import axios from 'axios';
 import {APIError} from "./APIError";
 
 
-// const serverHost = 'http://localhost:3000';
-const serverHost = 'http://10.0.2.2:3000';
+const serverHost = 'http://localhost:3000';
+// const serverHost = 'http://10.0.2.2:3000';
 export const addRequestInterceptor = (callback => axios.interceptors.request.use(callback) );
 export const removeRequestInterceptor = (interceptor) => axios.interceptors.request.eject(interceptor);
 export const addResponseInterceptor = (callback) => axios.interceptors.response.use(callback);
@@ -26,7 +26,7 @@ export async function fetchAPI(endpoint, method, options)
     switch (method.toLowerCase()) {
       case 'get': {
         const resp =  await axios.get(serverHost + endpoint);
-      return resp;
+        return resp;
       }
       case 'post': {
         return await axios.post(serverHost + endpoint, options.data, options)
@@ -73,10 +73,10 @@ export async function get(endpoint, params = {}, options)
 export async function post(endpoint, body, options)
 {
   return await fetchAPI(endpoint, 'POST', {
-      data: body,
+    data: body,
 
-      ...options
-    });
+    ...options
+  });
 
 }
 /**
@@ -96,6 +96,6 @@ function buildEndpoint(endpoint, params) {
         url += "&";
       }
     });
-}
+  }
   return url;
 }

@@ -19,7 +19,7 @@ const RoomDetailScreen = ({route, style, navigation}) => {
     const {room} = route.params;
     const users = room.users ;
 
-
+    const [isLoading, setIsLoading] = useState(false);
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
