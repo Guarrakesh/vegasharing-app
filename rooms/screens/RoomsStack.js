@@ -22,9 +22,9 @@ const RoomsStack = ({navigation}) => {
     return (
         <Stack.Navigator mode="modal" screenOptions={{
           headerTitleAlign: 'left',
-          headerStyle: { height: 120,borderBottomRightRadius: 24, borderBottomLeftRadius: 24 },
+          headerStyle: { height: 120,borderBottomRightRadius: 24, borderBottomLeftRadius: 24},
           headerTransparent: true,
-          headerBackground: () => <BlurView tint={theme.mode} intensity={100} style={[StyleSheet.absoluteFill,{borderBottomRightRadius: 24, borderBottomLeftRadius: 24}]} />,
+          headerBackground: () => <BlurView tint={theme.mode} intensity={100} style={[StyleSheet.absoluteFill]} />,
           headerBackTitleVisible: false,
           headerTitleStyle: {
             fontSize: 21,

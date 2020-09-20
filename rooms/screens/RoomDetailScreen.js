@@ -44,7 +44,6 @@ const RoomDetailScreen = ({route, style, navigation}) => {
         }
     }
 
-    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         fetchHands();

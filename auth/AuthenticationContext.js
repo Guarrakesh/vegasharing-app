@@ -84,7 +84,7 @@ export default function AuthContextProvider({ children }) {
       return request;
     } else {
       console.log(`[AuthContext] Intercepting request ${request.method} ${request.url}`);
-      if (tokenRef.current) {
+      if (tokenRef.current && tokenRef.current.accessToken) {
         console.log(`[AuthContext]Check if there is Token is fresh...`);
         await waitForRefresh();
         if (checkTokenExpired(tokenRef.current)) {
@@ -100,6 +100,7 @@ export default function AuthContextProvider({ children }) {
         };
         return request;
       }
+      return request;
     }
   };
 
