@@ -22,7 +22,7 @@ const withMarginTop = (Screen) => {
 }
 
 
-const Modal = () => {
+export const CreateRoomModal = () => {
   return (
       <ModalStack.Navigator mode="modal">
         <Stack.Screen name={routes.ROOMS.CREATE_ROOM_SCREEN}
@@ -64,10 +64,6 @@ const RoomsStack = ({navigation}) => {
                       }
         />
         <Stack.Screen name={routes.ROOMS.DETAIL} component={withMarginTop(RoomDetailsScreen)}/>
-        <Stack.Screen name={routes.ROOMS.CREATE_STACK}
-                      options={{ title: null }}
-                      component={Modal}/>
-
         {/*  <Stack.Screen name="Signup" component={SecondHomeScreen}/>*/}
 
       </Stack.Navigator>

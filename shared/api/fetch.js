@@ -3,7 +3,7 @@ import axios from 'axios';
 import {APIError} from "./APIError";
 
 
-const serverHost = 'http://localhost:3000';
+const serverHost = 'https://vega-sharing-staging.herokuapp.com';
 // const serverHost = 'http://10.0.2.2:3000';
 export const addRequestInterceptor = (callback => axios.interceptors.request.use(callback) );
 export const removeRequestInterceptor = (interceptor) => axios.interceptors.request.eject(interceptor);

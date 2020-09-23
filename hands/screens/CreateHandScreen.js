@@ -23,16 +23,12 @@ const CreateHand=({navigation, style, route}) => {
 
     const styles = makeStyles(theme);
 
-
     React.useLayoutEffect(() => {
-        const parent = navigation.dangerouslyGetParent();
-        if (parent) {
-            parent.setOptions({
+            navigation.setOptions({
                 headerRight: () => (
                     <Button onPress={createHand} title="Done" disabled={!name}/>
                 )
             })
-        }
     });
     const createHand = async () => {
         try {
@@ -44,15 +40,15 @@ const CreateHand=({navigation, style, route}) => {
             await post(endpoints.SESSIONS.POST, {
                 name,
                 description,
-                creatorId: user.id,
+                creatorId: user.id || user._id,
                 roomId: room._id
             });
             navigation.goBack();
         } catch(error) {
             if (error.response && error.response.data) {
-                addError(error.response.data);
+                addError(error.response.data.message);
             } else {
-                addError(error.message ?? error);
+                addError(error.message);
             }
         }
     }

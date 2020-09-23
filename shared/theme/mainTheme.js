@@ -1,5 +1,15 @@
 import shadows from "./shadows";
 
+const fonts = {
+  AvenirNextPro: {
+    bold: "avenir-next-lt-pro-bold",
+    demi: "avenir-next-lt-pro-demi",
+    itali: "avenir-next-lt-pro-it",
+    regular: "avenir-next-lt-pro-regular",
+    demiCn: "avenir-next-lt-pro-demi-cn",
+    boldCn: "avenir-next-lt-pro-bold-cn"
+  }
+}
 export default {
   mode: 'light',
   palette: {
@@ -43,7 +53,7 @@ export default {
     marginBottom: 16,
     fontSize: 16,
     label: {
-      fontFamily: 'AvenirNextLTPro-Regular',
+      fontFamily: fonts.AvenirNextPro.regular,
       fontWeight: '600',
       color: '#444',
       fontSize: 15,
@@ -60,5 +70,6 @@ export default {
     borderRadius1: 4,
     borderRadius2: 8,
     borderRadius3: 12
-  }
+  },
+  fonts
 }

@@ -5,6 +5,7 @@ import {useAPI} from "../../shared/api/APIContext";
 import endpoints from "../../shared/endpoints";
 import RoomCard from "../components/RoomCard";
 import routes from '../../shared/routes';
+import {useFetchRooms} from "../hooks/useFetchRooms";
 
 //
 // const rooms = [
@@ -19,25 +20,12 @@ import routes from '../../shared/routes';
 // ]
 const RoomsScreen = ({navigation, style}) => {
 
-    const [rooms, setRooms] = useState([]);
     const { user } = useAuth();
     const { get } = useAPI();
-    let getRoomsUrl = endpoints.ROOMS.GET_MANY;
-    const fetchRooms = async () => {
-        try {
-            const rooms = await get(getRoomsUrl, { userId: user._id || user._id });
-            setRooms(rooms.data);
-        } catch (exception) {
-            console.log("Impossibile leggere le stanze: " + exception.response.data.message);
-        } finally {
-            setIsLoading(false);
-        }
-    }
-
-    const [isLoading, setIsLoading] = useState(false);
+    const { data, fetch, refresh, loading, refreshing } = useFetchRooms();
 
     useEffect(() => {
-        fetchRooms();
+        fetch();
     }, []);
 
     const onCardPress=(room)=>{navigation.navigate(routes.ROOMS.DETAIL, {roomId:room._id, room})};
@@ -47,9 +35,9 @@ const RoomsScreen = ({navigation, style}) => {
         <SafeAreaView style={[styles.container, style]} >
             {/* isLoading ? <ActivityIndicator/> : null */}
             <ScrollView
-                refreshControl={<RefreshControl onRefresh={fetchRooms} refreshing={isLoading}/>}
+                refreshControl={<RefreshControl onRefresh={refresh} refreshing={refreshing}/>}
                 contentContainerStyle={{paddingHorizontal: 16, justifyContent: 'center', alignItems: 'center'}}>
-                { rooms.map(room => (<RoomCard key={room._id} room={room} onPress={()=> onCardPress(room)}/>))}
+                { data.map(room => (<RoomCard key={room._id} room={room} onPress={()=> onCardPress(room)}/>))}
             </ScrollView>
         </SafeAreaView>
     )

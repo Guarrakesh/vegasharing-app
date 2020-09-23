@@ -38,7 +38,7 @@ export const ErrorNotification = () => {
             styles.root,
             { transform: [ { translateY: translationY } ]}
           ]}>
-        <Text style={styles.text}>{error.message}</Text>
+        <Text style={styles.text}>{error.message.toString()}</Text>
       </AnimatedSafeAreaView>
       ;
 }

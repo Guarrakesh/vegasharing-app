@@ -3,7 +3,7 @@ import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import { useTheme } from "../../shared/theme/ThemeContext";
 
 
-const RoomCard = ({ room, onPress }) => {
+const RoomCard = ({ room, onPress, style }) => {
  // const room = props.room;
   const theme = useTheme();
   const styles = makeStyles(theme);
@@ -13,7 +13,7 @@ const RoomCard = ({ room, onPress }) => {
   return (
       <TouchableOpacity title=""
                         onPress={onPress}
-                        style={styles.touchable}>
+                        style={[styles.touchable, style]}>
         <View style={{flex: 1}}>
           <Text style={styles.touchableTitle}>{room.name}</Text>
           <Text style={styles.text}>{room.description}</Text>

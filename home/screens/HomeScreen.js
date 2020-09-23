@@ -1,24 +1,24 @@
 
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity} from "react-native";
+import { StyleSheet,RefreshControl, Text, View, SafeAreaView, TouchableOpacity, ScrollView} from "react-native";
 import {useAuth} from "../../auth/AuthenticationContext";
+import HandCard from "../../hands/components/HandCard";
+import {useFetchHands} from "../../hands/hooks/useFetchHands";
+import RoomCard from "../../rooms/components/RoomCard";
+import {useFetchRooms} from "../../rooms/hooks/useFetchRooms";
 import Typography from "../../shared/components/Typography";
 import UserAvatar from "../../shared/components/UserAvatar";
 import {useTheme} from "../../shared/theme/ThemeContext";
+import routes from '../../shared/routes';
 
 const HomeScreen = ({ navigation }) => {
 
-  const { user, token, authenticated, logout} = useAuth();
+  const { user, logout} = useAuth();
   const theme = useTheme();
   const styles = makeStyles(theme);
-  const onTokenPress = async () => {
 
-    if (token) {
-      alert(token.accessToken);
-    } else {
-      alert("La token non esiste, prova a loggarti prima");
-    }
-  };
+  const { fetch: fetchRooms, data: rooms } = useFetchRooms();
+  const { fetch: fetchHands, data: hands } = useFetchHands();
 
   const [text, setText] = useState(null);
 
@@ -26,17 +26,35 @@ const HomeScreen = ({ navigation }) => {
 
   const [backgroundColor, setBackgroundColor] = useState("#fff");
 
-  // background color - cambia colore della striscia ogni volta che cambio testo
+  const fetchAll = async () => {
+    fetchRooms();
+    fetchHands();
+  }
   useEffect(() => {
-    setBackgroundColor(colors[Math.floor(Math.random() * (colors.length-1))])
-  }, [text]);
+   fetchAll();
+  }, []);
+
+  const memoRooms = React.useCallback(() => {
+    if (rooms.length > 0) {
+      return rooms.slice(0, rooms.length > 0 ? 3 : rooms.length);
+    }
+    return [];
+  }, [rooms]);
+
+  const memoHands = React.useCallback(() => {
+    if (hands.length > 0) {
+      return rooms.slice(0, rooms.length > 0 ? 3 : rooms.length);
+    }
+    return [];
+  }, [hands]);
+
 
   const doLogout = () => {
     logout();
-  }
+  };
   return (
       <SafeAreaView style={styles.root}>
-        <View style={styles.container}>
+        <ScrollView style={styles.container} refreshControl={<RefreshControl refreshing={false} onRefresh={fetchAll}/>}>
           <View style={styles.userInfo}>
             <UserAvatar user={user} size="small"/>
             <Typography variant="subtitle" color={"text"}>
@@ -54,14 +72,26 @@ const HomeScreen = ({ navigation }) => {
               Your latest hands
 
             </Typography>
+            <ScrollView horizontal={true} contentContainerStyle={{ flexDirection: 'row', justifyContent: 'space-between'}}>
+              { memoHands().map(hand => (
+                  <HandCard hand={hand} style={{ flex: 1, width: "100%", height: '80%', marginRight: 16}}/>
+              ))}
+            </ScrollView>
           </View>
           <View style={styles.rooms}>
             <Typography variant="body">
-              Your active rooms
-
+              Latest rooms
             </Typography>
+            <ScrollView horizontal={true} contentContainerStyle={{ flexDirection: 'row', justifyContent: 'space-between'}}>
+              { memoRooms().map(room => (
+                    <RoomCard room={room}
+                              key={room.id}
+                              onPress={() => navigation.navigate(routes.ROOMS.DETAIL, { roomId: room._id, room })}
+                              style={{ flex: 1, width: "100%", height: '80%', marginRight: 16}}/>
+              ))}
+            </ScrollView>
           </View>
-        </View>
+        </ScrollView>
       </SafeAreaView>
 
   )
@@ -88,7 +118,7 @@ const makeStyles = theme => StyleSheet.create({
     padding: 12
   },
   hands: {
-    marginBottom: 32,
+    marginBottom: 8,
   },
   userInfo: {
     flexDirection: 'row',

@@ -20,17 +20,17 @@ Typography.propTypes = {
 }
 const makeStyles = theme => StyleSheet.create({
   root: {
-    fontFamily: 'AvenirNextLTPro-Regular',
+    fontFamily: theme.fonts.AvenirNextPro.regular,
   },
 
   title: {
-    fontFamily: 'AvenirNextLTPro-Bold',
+    fontFamily: theme.fonts.AvenirNextPro.bold,
     fontSize: 28,
 
   },
   subtitle: {
     fontSize: 20,
-    fontFamily: 'AvenirNextLTPro-Demi',
+    fontFamily: theme.fonts.AvenirNextPro.demi,
 
   },
   body: {
