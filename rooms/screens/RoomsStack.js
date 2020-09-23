@@ -26,9 +26,8 @@ export const CreateRoomModal = () => {
   return (
       <ModalStack.Navigator mode="modal">
         <Stack.Screen name={routes.ROOMS.CREATE_ROOM_SCREEN}
+                      options={{title: "Create new Room", }}
                       component ={withMarginTop(CreateRoomScreen)}/>
-        <Stack.Screen name={routes.HANDS.CREATE_HAND_SCREEN}
-                      component ={withMarginTop(CreateHandScreen)}/>
       </ModalStack.Navigator>
   );
 }

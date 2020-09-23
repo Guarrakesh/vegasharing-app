@@ -13,7 +13,9 @@ const ModalStack = createStackNavigator();
 export const CreateHandModal = () => {
   return (
       <ModalStack.Navigator>
-        <Stack.Screen name={routes.HANDS.CREATE_HAND_SCREEN} component={CreateHandScreen}/>
+        <Stack.Screen name={routes.HANDS.CREATE_HAND_SCREEN}
+                      options={{title: "Create an Hand", }}
+                      component={CreateHandScreen}/>
 
       </ModalStack.Navigator>
   );

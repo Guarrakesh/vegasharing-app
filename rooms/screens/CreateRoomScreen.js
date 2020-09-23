@@ -35,15 +35,12 @@ const CreateRoomScreen=({navigation, style}) => {
   }
 
   React.useLayoutEffect(() => {
-    const parentNavigator = navigation.dangerouslyGetParent();
-    if (parentNavigator)
-    {
-      parentNavigator.setOptions({
+      navigation.setOptions({
         headerRight: () => (
             <Button onPress={createRoom} title="Done" disabled={!name || Object.keys(selectedUsers).length === 0}/>
         )
       })
-    }
+
   });
   const createRoom = async () => {
       try {
