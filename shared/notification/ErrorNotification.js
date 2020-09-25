@@ -5,7 +5,7 @@ import {useErrorContext} from "./ErrorContext";
 const AnimatedSafeAreaView = Animated.createAnimatedComponent(SafeAreaView);
 
 export const ErrorNotification = () => {
-  const { error, removeError } = useErrorContext();
+  const {error, removeError} = useErrorContext();
   const theme = useTheme();
 
   const translationY = new Animated.Value(0);
@@ -20,7 +20,7 @@ export const ErrorNotification = () => {
           useNativeDriver: true,
         }).start(removeError);
 
-      },5000);
+      }, 5000);
       Animated.timing(translationY, {
         toValue: Dimensions.get('screen').height / 8,
         duration: 100,
@@ -32,6 +32,9 @@ export const ErrorNotification = () => {
   }, [error]);
 
   const styles = makeStyles(theme);
+  if (error)
+    console.log(error.message);
+
   return error &&
       <AnimatedSafeAreaView
           style={[

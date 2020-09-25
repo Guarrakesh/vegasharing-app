@@ -50,11 +50,12 @@ const CreateRoomScreen=({navigation, style}) => {
           addError("Please fill the name and the room users fields");
           return;
         }
+
           await post(endpoints.ROOMS.POST, {
             name,
             description,
             userIds,
-            creatorId: user.id
+            creatorId: user.id || user._id,
           });
           navigation.goBack();
       } catch(error) {
@@ -92,7 +93,7 @@ const CreateRoomScreen=({navigation, style}) => {
                   }}/>
               <View style={styles.userList}>
                 {Object.keys(selectedUsers).map(key => (
-                    <View style={{ marginBottom: 12, flexDirection: 'row', alignItems: 'center'}}>
+                    <View key={key} style={{ marginBottom: 12, flexDirection: 'row', alignItems: 'center'}}>
                       <UserAvatar user={selectedUsers[key]} size={"small"}/>
                       <Text>{selectedUsers[key].username || (selectedUsers[key].name + " " + selectedUsers[key].lastname)}</Text>
                       <TouchableOpacity onPress={() => removeUsers(key)} style={styles.removeIcon}>

@@ -31,7 +31,7 @@ const HandsScreen = ({navigation}) => {
     }, []);
 
     return (
-        <SafeAreaView containerStyle={styles.container}>
+        <SafeAreaView style={styles.container}>
             <ScrollView
                 refreshControl={<RefreshControl onRefresh={fetchHands} refreshing={isLoading}/>}
                 contentContainerStyle={{paddingHorizontal: 16, justifyContent: 'center', alignItems: 'center'}}>

@@ -1,5 +1,5 @@
 import React from "react";
-import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {Dimensions, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import { useTheme } from "../../shared/theme/ThemeContext";
 import moment from "moment-timezone";//"moment";
 
@@ -27,6 +27,7 @@ const HandCard = ({ hand, style}) => {
 const makeStyles = function(theme) {
     return StyleSheet.create({
         touchable:{
+
             flex: 1,
             width: '100%',
             backgroundColor: theme.palette.primary.main,
@@ -49,6 +50,7 @@ const makeStyles = function(theme) {
         text: {
             color: theme.palette.white,
             fontSize: 20,
+            flexWrap: 'wrap',
         },
 
         subtitle: {

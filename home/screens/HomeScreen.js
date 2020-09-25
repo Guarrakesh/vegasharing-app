@@ -1,7 +1,8 @@
 
 import React, { useState, useEffect } from 'react';
-import { StyleSheet,RefreshControl, Text, View, SafeAreaView, TouchableOpacity, ScrollView} from "react-native";
+import { StyleSheet,RefreshControl, Dimensions, Text, View, SafeAreaView, TouchableOpacity, ScrollView} from "react-native";
 import {useAuth} from "../../auth/AuthenticationContext";
+import EmptyCardCTA from "../../hands/components/EmptyHandCTA";
 import HandCard from "../../hands/components/HandCard";
 import {useFetchHands} from "../../hands/hooks/useFetchHands";
 import RoomCard from "../../rooms/components/RoomCard";
@@ -31,7 +32,7 @@ const HomeScreen = ({ navigation }) => {
     fetchHands();
   }
   useEffect(() => {
-   fetchAll();
+    fetchAll();
   }, []);
 
   const memoRooms = React.useCallback(() => {
@@ -43,7 +44,7 @@ const HomeScreen = ({ navigation }) => {
 
   const memoHands = React.useCallback(() => {
     if (hands.length > 0) {
-      return rooms.slice(0, rooms.length > 0 ? 3 : rooms.length);
+      return hands.slice(0, hands.length > 0 ? 3 : hands.length);
     }
     return [];
   }, [hands]);
@@ -54,7 +55,7 @@ const HomeScreen = ({ navigation }) => {
   };
   return (
       <SafeAreaView style={styles.root}>
-        <ScrollView style={styles.container} refreshControl={<RefreshControl refreshing={false} onRefresh={fetchAll}/>}>
+        <ScrollView contentContainerStyle={styles.container} refreshControl={<RefreshControl refreshing={false} onRefresh={fetchAll}/>}>
           <View style={styles.userInfo}>
             <UserAvatar user={user} size="small"/>
             <Typography variant="subtitle" color={"text"}>
@@ -68,28 +69,60 @@ const HomeScreen = ({ navigation }) => {
           </View>
 
           <View style={styles.hands}>
-            <Typography variant="body">
-              Your latest hands
 
-            </Typography>
-            <ScrollView horizontal={true} contentContainerStyle={{ flexDirection: 'row', justifyContent: 'space-between'}}>
-              { memoHands().map(hand => (
-                  <HandCard hand={hand} style={{ flex: 1, width: "100%", height: '80%', marginRight: 16}}/>
-              ))}
-            </ScrollView>
+            {memoHands().length > 0
+                ? (
+                    <>
+                      <Typography variant="body">
+                        Your latest hands
+
+                      </Typography>
+                    <ScrollView horizontal={true}
+                               contentContainerStyle={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                      {memoHands().map(hand => (
+                          <HandCard hand={hand} style={{flex: 1, width: "100%", height: '80%', marginRight: 16,
+                            maxWidth: Dimensions.get('screen').width - 64,
+
+                          }}/>
+                      ))}
+                    </ScrollView>
+
+                    </>
+                )
+                :
+                (
+                    null
+                )
+            }
           </View>
           <View style={styles.rooms}>
-            <Typography variant="body">
-              Latest rooms
-            </Typography>
-            <ScrollView horizontal={true} contentContainerStyle={{ flexDirection: 'row', justifyContent: 'space-between'}}>
-              { memoRooms().map(room => (
-                    <RoomCard room={room}
-                              key={room.id}
-                              onPress={() => navigation.navigate(routes.ROOMS.DETAIL, { roomId: room._id, room })}
-                              style={{ flex: 1, width: "100%", height: '80%', marginRight: 16}}/>
-              ))}
-            </ScrollView>
+
+            { memoRooms().length > 0
+                ? (
+                    <>
+                    <Typography variant="body">
+                      Latest rooms
+                    </Typography>
+                    <ScrollView horizontal={true} contentContainerStyle={{ flexDirection: 'row', justifyContent: 'space-between'}}>
+                      { memoRooms().map(room => (
+                          <RoomCard room={room}
+                                    key={room.id}
+                                    onPress={() => navigation.navigate(routes.ROOMS.DETAIL, { roomId: room._id, room })}
+                                    style={{ flex: 1, width: "100%", height: '80%', marginRight: 16}}/>
+                      ))}
+                    </ScrollView>
+                    </>
+
+                )
+                : (
+                    <EmptyCardCTA title="No Rooms found. Create now a new one!"
+                      onPress={() => navigation.navigate( routes.ROOMS.CREATE_STACK, { screen: routes.ROOMS.CREATE_ROOM_SCREEN })}
+                    />
+                )
+
+
+            }
+
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -102,12 +135,14 @@ const makeStyles = theme => StyleSheet.create({
   root: {
     flex: 1,
     backgroundColor: theme.backgroundColor,
+    paddingBottom: 128,
 
   },
   container: {
     flex: 1,
     paddingHorizontal: 16,
     paddingTop: 32,
+    paddingBottom: 64,
     backgroundColor: theme.backgroundColor,
   },
   welcome: {
