@@ -1,16 +1,16 @@
 import React from "react";
-import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {Dimensions, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import { useTheme } from "../../shared/theme/ThemeContext";
 import moment from "moment-timezone";//"moment";
 
-const HandCard = ({ hand }) => {
+const HandCard = ({ hand, style}) => {
     const theme = useTheme();
     const styles = makeStyles(theme);
 
     return (
         <TouchableOpacity title=""
                           //onPress={}
-                          style={styles.touchable}>
+                          style={[styles.touchable, style]}>
             <View style={{flex: 1}}>
                 <Text style={styles.touchableTitle}>{hand.name}</Text>
                 <Text style={styles.text}>{hand.description}</Text>
@@ -27,9 +27,10 @@ const HandCard = ({ hand }) => {
 const makeStyles = function(theme) {
     return StyleSheet.create({
         touchable:{
+
             flex: 1,
             width: '100%',
-            backgroundColor: theme.palette.accent.main,
+            backgroundColor: theme.palette.primary.main,
             marginTop: 25,
             borderRadius: theme.card.borderRadius,
             justifyContent: 'center',
@@ -49,6 +50,7 @@ const makeStyles = function(theme) {
         text: {
             color: theme.palette.white,
             fontSize: 20,
+            flexWrap: 'wrap',
         },
 
         subtitle: {

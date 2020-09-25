@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
-import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {StyleSheet, Dimensions, Text, TouchableOpacity, View} from "react-native";
 import { useTheme } from "../../shared/theme/ThemeContext";
 
 
-const RoomCard = ({ room, onPress }) => {
+const RoomCard = ({ room, onPress, style }) => {
  // const room = props.room;
   const theme = useTheme();
   const styles = makeStyles(theme);
@@ -13,14 +13,12 @@ const RoomCard = ({ room, onPress }) => {
   return (
       <TouchableOpacity title=""
                         onPress={onPress}
-                        style={styles.touchable}>
+                        style={[styles.touchable, style]}>
         <View style={{flex: 1}}>
           <Text style={styles.touchableTitle}>{room.name}</Text>
           <Text style={styles.text}>{room.description}</Text>
           <Text style={styles.subtitle}>Users:</Text>
           <Text style={styles.text}>{names.join(', ')}</Text>
-          <Text style={styles.subtitle}>Latest hand:</Text>
-          <Text style={styles.text}>latesthand....</Text>
         </View>
       </TouchableOpacity>
   )
@@ -29,6 +27,7 @@ const RoomCard = ({ room, onPress }) => {
 const makeStyles = function(theme) {
   return StyleSheet.create({
     touchable:{
+      maxWidth: Dimensions.get('screen').width,
       flex: 1,
       width: '100%',
       backgroundColor: theme.palette.accent.main,
@@ -51,6 +50,7 @@ const makeStyles = function(theme) {
     text: {
       color: theme.palette.white,
       fontSize: 20,
+      flexWrap: 'wrap',
     },
 
     subtitle: {

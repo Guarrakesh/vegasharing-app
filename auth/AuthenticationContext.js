@@ -60,7 +60,6 @@ export default function AuthContextProvider({ children }) {
       let attempts = 0;
       const interval = setInterval(() => {
 
-        console.log(isRefreshing.current);
         console.log("[] ... ");
         if (attempts === nAttempts) { // raggiunto il num max di tentativi
           clearInterval(interval);

@@ -10,10 +10,12 @@ const Stack = createStackNavigator();
 const ModalStack = createStackNavigator();
 
 
-const Modal = () => {
+export const CreateHandModal = () => {
   return (
       <ModalStack.Navigator>
-        <Stack.Screen name={routes.HANDS.CREATE_HAND_SCREEN} component={CreateHandScreen}/>
+        <Stack.Screen name={routes.HANDS.CREATE_HAND_SCREEN}
+                      options={{title: "Create an Hand", }}
+                      component={CreateHandScreen}/>
 
       </ModalStack.Navigator>
   );
@@ -24,7 +26,6 @@ const HandsStack = () => {
         <Stack.Navigator mode="modal">
             <Stack.Screen name={routes.HANDS.MYHANDS} component={HandsScreen}/>
             {/*  <Stack.Screen name="Signup" component={SecondHomeScreen}/>*/}
-          <Stack.Screen name={routes.HANDS.CREATE_STACK} component={Modal} options={{ title: null, headerBackImage: ""}}/>
         </Stack.Navigator>
     )
 };

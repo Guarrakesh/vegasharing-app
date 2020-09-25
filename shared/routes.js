@@ -7,9 +7,14 @@ export default {
   HOME_SCREEN: "HomeScreen",
 
   ROOMS_SCREEN: 'Rooms',
+  HOME: {
+    STACK: 'HOME_STACK',
+    ROOM_DETAIL: 'RoomDetailScreen',
+    HAND_DETAIL: 'HandDetailScreen'
+  },
   ROOMS: {
     DETAIL: 'RoomDetailScreen',
-
+    STACK: 'ROOMS_STACK',
     CREATE_STACK: 'CREATE_ROOM_STACK',
     CREATE_ROOM_SCREEN: 'CreateRoomScreen',
   },
@@ -19,5 +24,9 @@ export default {
     CREATE_STACK: 'CREATE_HAND_STACK',
     MYHANDS: 'My Hands',
     CREATE_HAND_SCREEN: 'CreateHandScreen',
+  },
+
+  MODALS: {
+    STACK: 'MODAL_STACK'
   }
 }

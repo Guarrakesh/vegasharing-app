@@ -25,9 +25,7 @@ const RoomDetailScreen = ({route, style, navigation}) => {
         navigation.setOptions({
             headerRight: () => (
                 <TouchableOpacity style={{ marginRight: 16 }} onPress={() =>
-                    navigation.navigate(routes.ROOMS.CREATE_STACK, {
-                        screen: routes.HANDS.CREATE_HAND_SCREEN,
-                        params: { room }
+                    navigation.navigate(routes.HANDS.CREATE_STACK, { screen: routes.HANDS.CREATE_HAND_SCREEN, params: { room }
                      //   params: { screen: routes.HANDS.CREATE_HAND_SCREEN, params: { room } }
                     })}>
                 <Icon name="plus" size={18}/>

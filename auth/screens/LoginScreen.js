@@ -1,6 +1,5 @@
-import {StatusBar} from "expo-status-bar";
-import React, { useState} from 'react';
-import { SafeAreaView, Text, StyleSheet, TextInput, TouchableOpacity, View, Image, ScrollView } from 'react-native';
+import React, { useState, useEffect} from 'react';
+import { ActivityIndicator, SafeAreaView, TouchableWithoutFeedback, Platform, Text, Keyboard, StyleSheet, TextInput, TouchableOpacity, View, Image, ScrollView, KeyboardAvoidingView } from 'react-native';
 import {useAPI} from "../../shared/api/APIContext";
 import Typography from "../../shared/components/Typography";
 import {useErrorContext} from "../../shared/notification/ErrorContext";
@@ -17,14 +16,18 @@ const LoginScreen = ({ navigation }) => {
 
   const [username, setUsername] = useState(null);
   const [password, setPassword] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const { onLoginSuccess } = useAuth();
   const { post } = useAPI();
   const { addError, error } = useErrorContext();
   const theme = useTheme();
   const styles = makeStyles(theme);
+
   const submit = async () => {
     // fai le tue cose di login
+    if (isLoading) return;
     try {
+      setIsLoading(true);
       const response = await login(username, password);
       onLoginSuccess(response.data.user, response.data.token);
       navigation.navigate(routes.HOME_SCREEN);
@@ -34,34 +37,60 @@ const LoginScreen = ({ navigation }) => {
       } else {
         addError(`Non è stato possibile autenticarti: ${ex.message} (${ex.status})`, ex.status)
       }
+    } finally {
+      setIsLoading(false);
     }
   }
 
+  // Move to separated hook
+  const [keyboardOpen, setKeyboardOpen] = useState(false);
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+        'keyboardDidShow',
+        () => {
+          setKeyboardOpen(true); // or some other action
+        }
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+        'keyboardDidHide',
+        () => {
+          setKeyboardOpen(false); // or some other action
+        }
+    );
+
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
+  }, []);
+
   return (
       <SafeAreaView style={{backgroundColor: theme.palette.primary.main, flex: 1}}>
-        <View style={{ flex: 0.4,backgroundColor: theme.backgroundColor, borderBottomRightRadius: 75, paddingVertical: 50, paddingHorizontal: 32} }>
+        <View
+            style={{ flex:keyboardOpen ? Platform.OS === "android" ? 1 : 0.4 : 0.4,backgroundColor: theme.backgroundColor, borderBottomRightRadius: 75, paddingVertical: 50, paddingHorizontal: 32} }
+        >
 
-          {/*<SafeAreaView style={styles.header}>
+        {/*<SafeAreaView style={styles.header}>
 
         </SafeAreaView>*/}
           <ScrollView
               contentContainerStyle={{paddingTop: 42, backgroundColor: theme.backgroundColor, flex: 3, flexBasis: "70%", width: '100%', alignItems: 'flex-start' }}>
 
-            <Text style={{ color: theme.palette.text}}>Username</Text>
+            <Typography variant="body"  style={{ marginTop: 8 }}>Email</Typography>
             <TextInput
-                placeholder="Username"
+                placeholder="Email"
                 autoCapitalize="none"
                 keyboardType="email-address"
                 textContentType="username"
                 style={styles.textInputStyle} onChangeText={setUsername}/>
-            <Text style={{color:  theme.palette.text, marginTop: 16}}>Password</Text>
+            <Typography variant="body" color="text" style={{ marginTop: 8 }}>Password</Typography>
             <TextInput placeholder="Password" secureTextEntry={true} style={styles.textInputStyle} onChangeText={setPassword}/>
 
 
           </ScrollView>
         </View>
-        <View style={{ flex: 0.7}}>
-          <View style={{ ...StyleSheet.absoluteFillObject, backgroundColor: theme.backgroundColor}}/>
+        <View
+            style={{ flex: keyboardOpen ? Platform.OS === "android" ? 0 : 0.7 : 0.7, opacity: keyboardOpen ? 0 : 1}}>
           <View style={{ paddingTop: 38, justifyContent: 'flex-start', alignItems: 'center', flex: 1, backgroundColor: theme.palette.primary.main, borderTopLeftRadius: 75,}}>
             <View style={{ alignItems: 'center', flexDirection: 'row', justifyContent: "center"}}>
               <Typography variant="title" color="white" style={{ marginRight: 32, }}>Sign in</Typography>
@@ -70,7 +99,7 @@ const LoginScreen = ({ navigation }) => {
                                 disabled={!username || !password}
 
                                 style={styles.buttonStyle(!username || !password)}>
-                <Icon color={theme.palette.primary.main} name="arrowright" size={24}/>
+                {isLoading ? <ActivityIndicator/> : <Icon color={theme.palette.primary.main} name="arrowright" size={24}/>}
               </TouchableOpacity>
             </View>
 
@@ -82,9 +111,9 @@ const LoginScreen = ({ navigation }) => {
               <Text style={styles.signup} textDecorationLine="underline">No account yet? Sign up</Text>
             </TouchableOpacity>
             <Image style={{ alignSelf: 'center', position: 'absolute', bottom: 0, marginBottom: 12}} source={Logo}/>
-
           </View>
         </View>
+
       </SafeAreaView>
   )
 }

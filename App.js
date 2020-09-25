@@ -6,8 +6,8 @@ import React, { useEffect } from 'react';
 import AuthContextProvider, {useAuth} from "./auth/AuthenticationContext";
 import AuthStack from "./auth/screens/AuthStack";
 import HomeStack from "./home/screens/HomeStack";
-import HandsStack from "./hands/screens/HandsStack";
-import RoomsStack from "./rooms/screens/RoomsStack";
+import HandsStack, {CreateHandModal} from "./hands/screens/HandsStack";
+import RoomsStack, {CreateRoomModal} from "./rooms/screens/RoomsStack";
 import SettingsScreen from "./settings/screens/SettingsScreen";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import APIContextProvider from "./shared/api/APIContext";
@@ -26,29 +26,26 @@ const MainNavigator = ({ navigation }) => {
 
   const { authenticated } = useAuth();
   const theme = useTheme();
+  const [fontsLoaded] = useCustomFonts();
+
   useEffect(() => {
-    console.log(authenticated);
-    if (!authenticated) {
+    if (!authenticated && fontsLoaded) {
       navigation.navigate(routes.AUTH);
     }
-  }, [authenticated]);
-
-  const  [fontsLoaded] = useCustomFonts();
+  }, [authenticated, fontsLoaded]);
 
   if (!fontsLoaded) return <AppLoading/>;
-
-
 
   return (
       <Tab.Navigator screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
           switch (route.name) {
-            case "Home":
+            case routes.HOME.STACK:
               iconName = 'home'; break;
             case routes.HANDS.STACK:
               iconName = 'sharealt'; break;
-            case "Rooms":
+            case routes.ROOMS.STACK:
               iconName = 'team'; break;
             case "Settings":
               iconName = 'setting'; break;
@@ -62,14 +59,15 @@ const MainNavigator = ({ navigation }) => {
                        inactiveTintColor: theme.palette.text,
                      }}
       >
-        <Tab.Screen name="Home" component={HomeStack} />
+        <Tab.Screen name={routes.HOME.STACK} options={{ title: "Home" }} component={HomeStack} />
         <Tab.Screen name={routes.HANDS.STACK} options={{ title: "My Hands" }} component={HandsStack}/>
-        <Tab.Screen name="Rooms" component={RoomsStack}/>
+        <Tab.Screen name={routes.ROOMS.STACK} options={{ title: 'Rooms' }} component={RoomsStack}/>
         {/*<Tab.Screen name="Settings" component={SettingsScreen}/>*/}
 
       </Tab.Navigator>
   )
 };
+
 
 export default function App() {
 
@@ -79,9 +77,11 @@ export default function App() {
           <AuthContextProvider>
             <ErrorContextProvider>
               <NavigationContainer>
-                <RootStack.Navigator>
+                <RootStack.Navigator mode="modal">
                   <RootStack.Screen name={routes.ROOT} component={MainNavigator} options={{ headerShown: false}}/>
                   <RootStack.Screen name={routes.AUTH} component={AuthStack} options={{ headerShown: false}} />
+                  <RootStack.Screen name={routes.ROOMS.CREATE_STACK} component={CreateRoomModal} options={{ headerShown: false}}/>
+                  <RootStack.Screen name={routes.HANDS.CREATE_STACK} component={CreateHandModal} options={{ headerShown: false}}/>
 
                 </RootStack.Navigator>
               </NavigationContainer>
